@@ -1,12 +1,12 @@
 (in-package :questionnaire)
 
-(defun adhoc/interpose (sep lst)
-  ;; an adhoc list operation
-  "For example, (adhoc/interpose 7 '(1 2 3)) returns (1 7 2 7 3)."
+(defun aux/interpose (sep lst)
+  ;; an aux list operation
+  "For example, (aux/interpose 7 '(1 2 3)) returns (1 7 2 7 3)."
   (cdr (alexandria:flatten
     (mapcar (lambda (e) (cons sep e)) lst))))
 
-(defun adhoc/format-time-string-now ()
+(defun aux/format-time-string-now ()
   "An auxiliary time string formatter. It returns a string that
 indicates the current time. For example, \"2021-01-24
 11:28:15-04:30\"."
@@ -23,12 +23,12 @@ indicates the current time. For example, \"2021-01-24
               hour minute second
               (plusp tz-h) (abs tz-h) (truncate (abs tz-m) 1/60)))))
 
-(defun append-strs-to-csv (strs csv)
+(defun aux/append-strs-to-csv (strs csv)
   "Takes a list of strings, interpose with commas, prepend with a
 newline character, and append to the given csv."
   (let ((s (apply #'concatenate 'string
                   (cons (make-string 1 :initial-element #\newline)
-                        (adhoc/interpose ","
+                        (aux/interpose ","
                                          (mapcar (lambda (str)
                                                    (concatenate 'string
                                                                 "\"" str "\""))

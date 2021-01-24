@@ -6,8 +6,8 @@
   :serial t
   :depends-on (
                :alexandria
-               :cl-date-time-parser
                :cl-csv
+               :cl-date-time-parser
               )
   :components (
                (:file "package")

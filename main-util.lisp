@@ -44,7 +44,7 @@ newline trimmed."
                         (uiop:launch-program
                          (list "echo" "-e"
                                (apply #'concatenate 'string
-                                      (adhoc/interpose "\\n" default-answers)))
+                                      (aux/interpose "\\n" default-answers)))
                          :output :stream))
                        :output :string))))
 
@@ -52,5 +52,5 @@ newline trimmed."
   "Run through the list of questions in the questionnarie QNR and
 construct a list of answers. Prepend it by the currrent time (as
 a string). Return the list"
-  (cons (adhoc/format-time-string-now)
+  (cons (aux/format-time-string-now)
         (mapcar #'ask-q (qnr-qs qnr))))

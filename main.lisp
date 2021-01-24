@@ -10,7 +10,18 @@ If FORCE is t, proceed forcefully."
   ;; 1. (execute-qnr mood-qnr)
   ;; 2. (mapcar 'execute-qnr '(mood-qnr weight-qnr))
   (if force
-      (append-strs-to-csv (ask-qnr qnr) (qnr-path qnr))
+      (aux/append-strs-to-csv (ask-qnr qnr) (qnr-path qnr))
       (if (expiredp qnr)
-          (append-strs-to-csv (ask-qnr qnr) (qnr-path qnr))
+          (aux/append-strs-to-csv (ask-qnr qnr) (qnr-path qnr))
           (print "Not expired yet. Do nothing."))))
+
+;; Example usage:
+;;   (execute-qnr example-qnr)
+(setf example-qnr
+      (make-qnr :name "Example Questionnaire"
+                :path "/tmp/example.csv"
+                :period (* 60 60 3)
+                :qs '(("How are you?" ("Hype" "Great"
+                                       "Meh" "Tired"
+                                       "Down" "Sad" "Angry"))
+                      ("Any comments?" ()))))
