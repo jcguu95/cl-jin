@@ -1,5 +1,12 @@
 (in-package :formosa-bakery-helper)
 
+(setf (cdr (assoc 'slynk:*string-elision-length* slynk:*slynk-pprint-bindings*)) nil)
+
+;; The variable that gets updated
+;; deconstructively and holds the orders.
+(defvar *record*)
+(setf *record* nil)
+
 (defvar newline
   (make-string 1 :initial-element #\Newline))
 

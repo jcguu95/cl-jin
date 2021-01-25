@@ -1,15 +1,23 @@
 (in-package :formosa-bakery-helper)
 
-(defun main (path)
-  (defvar *target* nil)
-  (setf *target* "~/full-test.csv")
+(defun main (&key input (output "/tmp/test.txt"))
+  "Entry function of the project."
+  (let ((data (cdr (cl-csv:read-csv (pathname input)))))
 
-  (defvar *data* nil)
-  (setf *data*
-        (cdr (cl-csv:read-csv (pathname *target*))))
+    ;; Deconstructively update *record*!
+    (setf *record* nil)
+    (mapcar #'column->*record* data)
 
-  (defvar *record* nil)
-  (mapcar #'column->record *data*) ;; Deconstructively update *record*!
-
-  (apply #'concatenate 'string
-         (mapcar #'order->string (mapcar #'cdr *record*))))
+    ;; *record* -> string
+    (let* ((strs (mapcar #'order->string (mapcar #'cdr *record*)))
+           (str (apply #'concatenate 'string strs)))
+      ;; Showcase the result.
+      str
+      ;; Write string to OUTPUT.
+      (when output
+        (progn
+          (with-open-file (f (pathname output)
+                             :direction :output
+                             :if-exists :overwrite
+                             :if-does-not-exist :create)
+            (write-sequence str f)))))))

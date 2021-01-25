@@ -1,6 +1,6 @@
 (in-package :formosa-bakery-helper)
 
-(defun column->record (column)
+(defun column->*record* (column)
   "Update the *record* deconstructively from the given COLUMN."
   (when (metap column)
     (let ((new-order (make-order
