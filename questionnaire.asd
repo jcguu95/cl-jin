@@ -4,15 +4,11 @@
   :description "Ask questions and record answers."
   :version "1.0.0"
   :serial t
-  :depends-on (
-               :alexandria
+  :depends-on (:alexandria
                :cl-csv
-               :cl-date-time-parser
-              )
-  :components (
-               (:file "package")
+               :cl-date-time-parser)
+  :components ((:file "package")
                (:file "aux-util")
-               (:file "main-util")
+               (:file "questionnaire")
                (:file "main")
-               (:file "config")
-	      ))
+               (:file "config")))

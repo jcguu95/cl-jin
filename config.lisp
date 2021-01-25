@@ -1,16 +1,5 @@
 (in-package :questionnaire)
 
-;; - Example -
-;;
-;; (setf example-qnr
-;;       (make-qnr :name "Example Questionnaire"
-;;                 :path "/tmp/example.csv"
-;;                 :period (* 60 60 3)
-;;                 :qs '(("How are you?" ("Hype" "Great"
-;;                                        "Meh" "Tired"
-;;                                        "Down" "Sad" "Angry"))
-;;                       ("Any comments?" ()))))
-
 (setf mood-qnr
       (make-qnr :name "Mood Questionnaire"
                 :path "~/data/storage/body/moodlogger.csv"
