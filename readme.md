@@ -12,7 +12,8 @@ To load "formosa-bakery-helper":
 (:FORMOSA-BAKERY-HELPER)
 CL-USER> (in-package :formosa-bakery-helper)
 #<PACKAGE "FORMOSA-BAKERY-HELPER">
-FORMOSA-BAKERY-HELPER> (main :input "~/orders-formosa-bakery-1-23-overlandpark-weebly-com-1610776800-1611363412.csv")
+FORMOSA-BAKERY-HELPER>
+(main :input "~/orders-formosa-bakery-1-23-overlandpark-weebly-com-1610776800-1611363412.csv")
 "
 [ellided string..]
 ```
@@ -24,17 +25,16 @@ $ cat /tmp/test.txt
 $ vim /tmp/test.txt -c ":\!paps < % > /tmp/out.pdf"
 ```
 
-# Data Flow
+# Data flow
 
-/path/to/csv -> columns -> structure:order/meta+entries -> string
+```
+   /path/to/csv
+-> columns
+-> structure:order/meta+entries
+-> string
+```
 
 # TODO
-
-+ Disable slynk's string elision by default
-
-  ``` common-lisp
-  (setf (cdr (assoc 'slynk:*string-elision-length* slynk:*slynk-pprint-bindings*)) nil)
-  ```
 
 + Use format instead of concatenate.
 
