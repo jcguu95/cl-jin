@@ -1,3 +1,8 @@
+;; TODO !
+;; 1. date formatter
+;; 2. ledger-entry printer!
+;; 3. row->ledger-entry functions for other accounts (so far only done for chase3869)
+
 (ql:quickload :alexandria)
 (ql:quickload :arrows)
 (ql:quickload :cl-csv)
@@ -70,10 +75,6 @@ concatenate."
   ;TODO
   0
   )
-
-
-
-
 
 ;;; testing zone
 ;;; testing zone
