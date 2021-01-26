@@ -13,7 +13,8 @@ If FORCE is t, proceed forcefully."
       (aux/append-strs-to-csv (ask-qnr qnr) (qnr-path qnr))
       (if (expiredp qnr)
           (aux/append-strs-to-csv (ask-qnr qnr) (qnr-path qnr))
-          (print "Not expired yet. Do nothing."))))
+          (format t "~a not expired yet. Do nothing.~%"
+                  (qnr-name qnr)))))
 
 ;; Example usage:
 ;;   (execute-qnr example-qnr)
