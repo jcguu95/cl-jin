@@ -12,3 +12,20 @@ See entry point in `main.lisp`.
   csv breaks too easily.. what's another kind of db that's transparent?
 + Handle error when csv file doesn't exist.
 + Add auto doctor.
+
+# Configuration
+
+Add the following in `config.lisp`!
+
+``` common-lisp
+;; Example usage:
+;;   (execute-qnr example-qnr)
+(setf example-qnr
+      (make-qnr :name "Example Questionnaire"
+                :path "/tmp/example.csv"
+                :period (* 60 60 3)
+                :qs '(("How are you?" ("Hype" "Great"
+                                       "Meh" "Tired"
+                                       "Down" "Sad" "Angry"))
+                      ("Any comments?" ()))))
+```

@@ -32,14 +32,3 @@ If FORCE is t, proceed forcefully."
        (concatenate 'string
                     (qnr-name qnr)
                     ": NOT expired yet."))))
-
-;; Example usage:
-;;   (execute-qnr example-qnr)
-(setf example-qnr
-      (make-qnr :name "Example Questionnaire"
-                :path "/tmp/example.csv"
-                :period (* 60 60 3)
-                :qs '(("How are you?" ("Hype" "Great"
-                                       "Meh" "Tired"
-                                       "Down" "Sad" "Angry"))
-                      ("Any comments?" ()))))
