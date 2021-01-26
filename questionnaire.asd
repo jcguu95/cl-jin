@@ -10,5 +10,5 @@
   :components ((:file "package")
                (:file "aux-util")
                (:file "questionnaire")
-               (:file "main")
+               (:file "entry-point")
                (:file "config")))

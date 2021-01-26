@@ -1,0 +1,20 @@
+#!/usr/bin/sbcl --script
+(load "~/.sbclrc")
+
+(ql:quickload :arrows
+	      :silent t)
+(ql:quickload :questionnaire
+	      :silent t)
+(in-package :questionnaire)
+
+(defconstant my-qnrs (list mood-qnr weight-qnr))
+
+(if (member "--force"
+	(uiop:command-line-arguments)
+	:test #'string-equal)
+
+    (mapcar (lambda (x) (arrows:-<> x
+                                    (execute-qnr <> :force t)))
+	    (list mood-qnr weight-qnr))
+
+    (mapcar #'execute-qnr my-qnrs))
