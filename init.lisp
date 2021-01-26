@@ -3,11 +3,13 @@
 (ql:quickload :cl-csv)
 (ql:quickload :parse-float)
 
-(defstruct ledger-entry date description comment flows)
-(defstruct flow account unit amount)
+(defstruct ledger-entry
+  date description comment flows)
+(defstruct flow
+  account unit amount)
 
-;; aux
 (defun account (&rest args)
+  ;; an aux function
   "Expect each arg to be a string, interpose with colons, and
 concatenate."
   (arrows:->> args
@@ -20,25 +22,27 @@ concatenate."
   (cl-csv:read-csv (pathname csv)))
 
 (defun Chase-3869---row->ledger-entry (row)
-  "TODO"
-  (make-ledger-entry
-   :date (nth 0 row)
-   :description (nth 2 row)
-   :comment (nth 6 row)
-   :flows
-   (list (make-flow
-          :account
-          (account "Liabilities"
-                         "Credit Cards"
-                         "Chase Credit Card - Ending in 3869")
-          :unit "USD"
-          :amount
-          (parse-float:parse-float (nth 5 row)))
-         (make-flow
-          :account (tag->account (nth 7 row))
-          :unit "USD"
-          :amount
-          (- (parse-float:parse-float (nth 5 row)))))))
+  "The structure creator for chase credit 3869."
+  ;; It should be abstractified later when more creators are written.
+  (flet ((date-formatter (x) x)) ;; TODO
+         (make-ledger-entry
+          :date (date-formatter (nth 0 row))
+          :description (nth 2 row)
+          :comment (nth 6 row)
+          :flows
+          (list (make-flow
+                 :account
+                 (account "Liabilities"
+                          "Credit Cards"
+                          "Chase Credit Card - Ending in 3869")
+                 :unit "USD"
+                 :amount
+                 (parse-float:parse-float (nth 5 row)))
+                (make-flow
+                 :account (tag->account (nth 7 row))
+                 :unit "USD"
+                 :amount
+                 (- (parse-float:parse-float (nth 5 row))))))))
 
 (defun tag->account (tag)
   "A look-up table."
@@ -64,7 +68,12 @@ concatenate."
 (defun ledger-entry->out (ledger-entry)
   "Returns a formatted ledger entry."
   ;TODO
+  0
   )
+
+
+
+
 
 ;;; testing zone
 ;;; testing zone
