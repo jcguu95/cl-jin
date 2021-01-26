@@ -19,7 +19,6 @@ Add the following in `config.lisp`!
 
 ``` common-lisp
 ;; Example usage:
-;;   (execute-qnr example-qnr)
 (setf example-qnr
       (make-qnr :name "Example Questionnaire"
                 :path "/tmp/example.csv"
