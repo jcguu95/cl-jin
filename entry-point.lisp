@@ -16,6 +16,23 @@ If FORCE is t, proceed forcefully."
           (format t "~a not expired yet. Do nothing.~%"
                   (qnr-name qnr)))))
 
+(defun check-and-notify (qnr)
+  (if (expiredp qnr)
+      (progn
+        (write-line
+         (concatenate 'string
+                      (qnr-name qnr)
+                      ": EXPIRED. Sending notification."))
+        (asdf:run-shell-command
+         (concatenate 'string
+                      "notify-send \""
+                      (qnr-name qnr)
+                      ": EXPIRED!\"")))
+      (write-line
+       (concatenate 'string
+                    (qnr-name qnr)
+                    ": NOT expired yet."))))
+
 ;; Example usage:
 ;;   (execute-qnr example-qnr)
 (setf example-qnr
