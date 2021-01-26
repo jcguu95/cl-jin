@@ -1,25 +1,74 @@
+(ql:quickload :alexandria)
+(ql:quickload :arrows)
 (ql:quickload :cl-csv)
+(ql:quickload :parse-float)
 
-(defun csv->columns (csv)
+(defstruct ledger-entry date description comment flows)
+(defstruct flow account unit amount)
+
+;; aux
+(defun account (&rest args)
+  "Expect each arg to be a string, interpose with colons, and
+concatenate."
+  (arrows:->> args
+              (mapcar (lambda (e) (cons ":" e)))
+              (alexandria:flatten)
+              (cdr)
+              (apply #'concatenate 'string)))
+
+(defun csv->rows (csv)
   (cl-csv:read-csv (pathname csv)))
 
-(defun column->struct (template column)
-  "Template must be customized for each different csv."
-  (print "This function hasn't been implemented."))
+(defun Chase-3869---row->ledger-entry (row)
+  "TODO"
+  (make-ledger-entry
+   :date (nth 0 row)
+   :description (nth 2 row)
+   :comment (nth 6 row)
+   :flows
+   (list (make-flow
+          :account
+          (account "Liabilities"
+                         "Credit Cards"
+                         "Chase Credit Card - Ending in 3869")
+          :unit "USD"
+          :amount
+          (parse-float:parse-float (nth 5 row)))
+         (make-flow
+          :account (tag->account (nth 7 row))
+          :unit "USD"
+          :amount
+          (- (parse-float:parse-float (nth 5 row)))))))
 
-(defun struct->out (struct)
-  "Final formatter that returns a ledger entry.")
+(defun tag->account (tag)
+  "A look-up table."
+  (alexandria:eswitch (tag :test #'equal)
+    ;; --- Generic
+    ("F" (account "Expenses" "Food"))
+    ("T" (account "Expenses" "Transportation"))
+    ("H" (account "Expenses" "Housing"))
+    ("O" (account "Expenses" "Other"))
+    ("t" (account "Expenses" "Tax"))
+    ("i" (account "Assets" "Investment"))
+    ("I" (account "Income" "Interest"))
+    ("s" (account "Income" "Salary"))
+    ;; --- Unknown
+    ("c" (account "Other" "Unknown" "Cash"))
+    ("d" (account "Other" "Unknown" "Duplicate"))
+    ("?" (account "Other" "Unknown" "Undetermined"))
+    ("!" (account "Other" "Unknown" "Mixed"))
+    ;; --- Ignore
+    ("IGNORE" "")
+    ("e"      "")))
 
-(defstruct ledger-entry
-  date description comment flows)
+(defun ledger-entry->out (ledger-entry)
+  "Returns a formatted ledger entry."
+  ;TODO
+  )
 
-(defstruct flow
-  account unit amount)
-
-;; template for Chase 3869
-;; perhaps should use plist TODO
-(0 . '(id date))
-(2 . '(id description))
-(5 . '(id amount))
-(6 . '(id comment))
-(7 . '((category -> "a"-flow))) ;; todo
+;;; testing zone
+;;; testing zone
+(setf *data* (cdr (csv->rows "./data/Chase3869_sample.CSV")))
+(mapcar #'Chase-3869---row->ledger-entry *data*)
+;;; testing zone
+;;; testing zone
