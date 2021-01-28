@@ -25,7 +25,7 @@ If FORCE is t, proceed forcefully."
                       ": EXPIRED. Sending notification."))
         (asdf:run-shell-command
          (concatenate 'string
-                      "notify-send \""
+                      "notify-send --expire-time=0 \""
                       (qnr-name qnr)
                       ": EXPIRED!\"")))
       (write-line
