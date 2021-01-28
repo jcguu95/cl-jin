@@ -10,10 +10,14 @@
 
 (defun func-and (&rest funcs)
   "#'AND, but lifted to the functional level."
-  ;; (funcall (func-and #'id #'id #'id) t)
-  ;; (funcall (func-and #'id #'id #'id) nil)
-  ;; (funcall (func-and #'id #'id #'not) nil)
-  ;; (funcall (func-and #'not #'not #'not) nil)
-  (lambda (x) (eval (append '(and) (apply-functions funcs x)))))
-;; TODO still wrong, as (apply-functions aren't evaluated upon
-;; the macro is called.)
+  (lambda (x) (eval (append '(and)
+                            (apply-functions funcs x)))))
+
+(defun func-or (&rest funcs)
+  "#'OR, but lifted to the functional level."
+  (lambda (x) (eval (append '(or)
+                            (apply-functions funcs x)))))
+
+(defun func-not (func)
+  "#'NOT, but lifted to the functional level."
+  (lambda (x) (not (funcall func x))))
