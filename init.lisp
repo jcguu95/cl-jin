@@ -8,14 +8,12 @@
   (loop for f in fs
         collect (funcall f e)))
 
-(defmacro apply-macro (m es)
-  ;; Try (macroexpand-1 '(apply-macro and (t t nil)))
-  (append (list m) es))
-
 (defun func-and (&rest funcs)
   "#'AND, but lifted to the functional level."
-  (lambda (x) (apply-macro and (apply-functions funcs x))))
+  ;; (funcall (func-and #'id #'id #'id) t)
+  ;; (funcall (func-and #'id #'id #'id) nil)
+  ;; (funcall (func-and #'id #'id #'not) nil)
+  ;; (funcall (func-and #'not #'not #'not) nil)
+  (lambda (x) (eval (append '(and) (apply-functions funcs x)))))
 ;; TODO still wrong, as (apply-functions aren't evaluated upon
 ;; the macro is called.)
-
-(funcall (func-and #'not #'not) nil)
