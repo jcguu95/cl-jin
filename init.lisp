@@ -51,13 +51,22 @@ is represented by 1230, while 10:30pm is represented as 2230."
 ;; action functions
 
 ;; kill app
-;; TODO
-;; slock user
-;; TODO
-;;
+;; DONE
+(defun kill-app (app)
+  (uiop:run-program '("pkill" app)))
+
+;; slock
+;; DONE
+(defun slock (n)
+  "Screen lock the N-th display.
+
+_Remark_ Depends on the binary slock."
+  (let ((display n))
+    (uiop:run-program
+     (format nil "export DISPLAY=:~a ; slock &" display))))
+
 ;; URL (un)lockers ;;
 ;; DONE
-
 (defvar *dns-path* "/home/jin/hosts")
 ;(defvar *dns-path* "/etc/hosts")
 
