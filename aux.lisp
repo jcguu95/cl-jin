@@ -26,3 +26,14 @@
     (loop for line = (read-line stream nil)
           while line
           collect line)))
+
+;; instruction handling
+
+(defun within=>do (pair)
+  (unless (eq (length pair) 2)
+    (error "Input should be a list of length 2."))
+  (let ((interval (car pair))
+        (action (car (cdr pair))))
+    (when (funcall (apply #'time-within interval)
+                   (now-in-int))
+      (eval action))))
