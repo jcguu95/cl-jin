@@ -1,12 +1,10 @@
-; finally I want to do this for so long
-;  --> curfew in common lisp!
+(in-package :curfew)
 
-(defvar *url-list*
+(setf *url-list*
   '("www.youtube.com" "news.ycombinator.com"
     "www.reddit.com" "old.reddit.com"
     "www.facebook.com" "www.messenger.com" "www.instagram.com"))
 
-(defvar instruction*)
 (setf *instruction*
   '(((1730 1700) (mapcar #'lock-url *url-list*))
     ;; FIXME remember that lock-url has a weird bug.
