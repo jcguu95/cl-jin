@@ -16,6 +16,7 @@
   (when (funcall (time-within (1730 1700))
                  (now-in-int))
     (mapcar #'lock-url *url-list*))
+  ;; FIXME remember that lock-url has a weird bug.
 
   (when (funcall (time-within (1700 1900))
                  (now-in-int))

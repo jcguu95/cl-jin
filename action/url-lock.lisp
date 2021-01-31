@@ -27,6 +27,10 @@ _Remark_ This function depends on the global variable *DNS-PATH*."
                                   :direction :output
                                   :if-exists :overwrite)
             (format stream "~{~a~^~%~}" result))
+          ;;; FIXME the writing action above has a weird bug.
+          ;;; It duplicates the last letter of the last line.
+          ;;; It doesn't happen to the function #'unlock-url below.
+          ;;; I don't know why.
           (format t "Locking URL: \"~a\"." url)))))
 
 (defun unlock-url (url)
