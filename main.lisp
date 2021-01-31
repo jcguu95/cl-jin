@@ -24,3 +24,11 @@
   (when (funcall (time-within (1930 0500))
                  (now-in-int))
     (slock-all)))
+
+
+;<pjb> (defmacro ???? (&rest pairs) `(progn ,@(mapcar (lambda (pair) `(when
+;      ,@pair)) pairs))) #| --> ???? |#
+;<pjb> (macroexpand-1 '(???? (a1 a2) (b1 b2) (c1 c2) (d1 d2))) #| --> (progn
+;      (when a1 a2) (when b1 b2) (when c1 c2) (when d1 d2)) ; t |#
+;<pjb> (macroexpand-1 '(???? (a1 a2) (b1 b2))) #| --> (progn (when a1 a2) (when
+;      b1 b2)) ; t |#
