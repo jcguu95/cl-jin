@@ -1,7 +1,7 @@
 (in-package :curfew)
 
-(defvar *dns-path* "/home/jin/hosts")
-;(defvar *dns-path* "/etc/hosts")
+;(setf *dns-path* "/home/jin/hosts")
+(setf *dns-path* "/etc/hosts")
 
 (defun lock-url (url)
   "In DNS-FILE, do the following. If there is DECO-URL, then
@@ -17,7 +17,7 @@ _Remark_ This function depends on the global variable *DNS-PATH*."
          (deco#url (format nil "#127.0.0.1 ~a  # curfew.d" url))
          (dns-file (get-file *dns-path*)))
     (if (find deco-url dns-file :test #'equal)
-        (format t "URL locked already by this program: \"~a\"." url)
+        (format t "URL locked already by this program: \"~a\"~%." url)
         (let ((result (if (find deco#url dns-file :test #'equal)
                           (substitute deco-url deco#url
                                       dns-file    :test #'equal)
@@ -31,7 +31,7 @@ _Remark_ This function depends on the global variable *DNS-PATH*."
           ;;; It duplicates the last letter of the last line.
           ;;; It doesn't happen to the function #'unlock-url below.
           ;;; I don't know why.
-          (format t "Locking URL: \"~a\"." url)))))
+          (format t "Locking URL: \"~a\".~%" url)))))
 
 (defun unlock-url (url)
   "In DNS-FILE, when there is DECO-URL, uncomment the URL and
@@ -53,6 +53,6 @@ _Remark_ This function depends on the global variable *DNS-PATH*."
                                 :if-exists :overwrite)
           (format stream "~{~a~^~%~}" result))
 
-          (format t "Unlocking URL: \"~a\"." url))
+          (format t "Unlocking URL: \"~a\".~%" url))
 
-      (format t "URL not locked by this program: \"~a\"." url))))
+      (format t "URL not locked by this program: \"~a\".~%" url))))
