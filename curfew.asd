@@ -11,4 +11,4 @@
                (:file "action/kill-app")
                (:file "action/slock")
                (:file "action/url-lock")
-               (:file "init")))
+               (:file "main")))
