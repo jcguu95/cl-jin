@@ -16,8 +16,6 @@
         ((1700 1730) (mapcar #'unlock-url *url-list*))
         ))
 
-
-
 (defun main ()
   "Main entry point."
   (mapcar #'within=>do *instruction*)
