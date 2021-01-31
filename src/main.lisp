@@ -18,5 +18,8 @@
 
 (defun main ()
   "Main entry point."
+  (format t 
+	  "~%------~%Function #'main executed at ~a.~%------~%"
+	  (local-time:now))
   (mapcar #'within=>do *instruction*)
-  (format t "Function #'main executed."))
+  )

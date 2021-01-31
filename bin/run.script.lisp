@@ -1,4 +1,6 @@
-(load ".sbclrc")
+(load (merge-pathnames ".sbclrc" 
+		       (user-homedir-pathname)))
+
 (ql:quickload :curfew)
 (in-package :curfew)
 
