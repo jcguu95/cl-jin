@@ -6,6 +6,7 @@
 
 _Remark_ Depends on the binary slock."
   (let ((display n))
+    (format t "Applying slock to DISPLAY=:~a" display)
     (uiop:run-program
      (format nil "export DISPLAY=:~a ; slock &" display))))
 

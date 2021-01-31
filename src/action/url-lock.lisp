@@ -17,7 +17,7 @@ _Remark_ This function depends on the global variable *DNS-PATH*."
          (deco#url (format nil "#127.0.0.1 ~a  # curfew.d" url))
          (dns-file (get-file *dns-path*)))
     (if (find deco-url dns-file :test #'equal)
-        (format t "URL locked already by this program: \"~a\".~%" url)
+        (format t "Skipped locking URL as it is already locked by this program:~%  URL=~a~%" url)
         (let ((result (if (find deco#url dns-file :test #'equal)
                           (substitute deco-url deco#url
                                       dns-file    :test #'equal)
@@ -55,4 +55,4 @@ _Remark_ This function depends on the global variable *DNS-PATH*."
 
           (format t "Unlocking URL: \"~a\".~%" url))
 
-      (format t "URL not locked by this program: \"~a\".~%" url))))
+      (format t "Skipped unlocking URL as it is not locked by this program...~%  URL=~a~%" url))))
