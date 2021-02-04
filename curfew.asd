@@ -9,6 +9,7 @@
                (:file "src/aux")
                (:file "src/predicate")
                (:file "src/action/kill-app")
+               (:file "src/action/kill-user")
                (:file "src/action/slock")
                (:file "src/action/url-lock")
                (:file "src/main")))
