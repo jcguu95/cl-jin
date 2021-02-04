@@ -9,8 +9,11 @@
 
 (setf *instruction*
       '(
-        ((1700 1900) (slock-all "jin"))
-        ((1930 0500) (slock-all "jin"))
+        ((1930 0230) (kill-user "jin"))
+        ((0230 0500) (slock-all "jin"))
+        ((0230 1700) (continue-user "jin"))
+        ((1700 1900) (kill-user "jin"))
+        ((1900 1930) (continue-user "jin"))
 
         ((1700 1630) (mapcar #'lock-url *url-list*))
         ((1630 1700) (mapcar #'unlock-url *url-list*))
