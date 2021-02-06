@@ -12,3 +12,8 @@ REQUIRE access to `/etc/hosts`.
 # Bug
 
 Remember that `#'lock-url` has a weird bug.
+
+# TODO
+
++ Add systematic 10-minute breaks.
++ Add systematic 30-minute locks.
