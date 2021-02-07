@@ -4,4 +4,5 @@
 (ql:quickload :curfew)
 (in-package :curfew)
 
-(loop (main) (sleep 5))
+(loop (ignore-errors (main))
+		(sleep 4))
