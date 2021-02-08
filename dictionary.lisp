@@ -1,5 +1,11 @@
 (in-package :dictionary)
 
+;; readme
+;; entry points
+;; #'lookup-dict!
+;; #'random-review!
+;; #'review-history!
+
 (defun lint (str)
   "Lint the marks in the input string STR."
   (arrows:-<> str
@@ -95,14 +101,21 @@ result to a clip file."
         (eval (read-from-string
                (format nil "'(~a)" (uiop:read-file-string "~/.nb/clip.txt"))))))
 
+(defvar *review-hist* nil)
+(defvar *review-hist-length* 10)
 (defun random-review (&key lookup)
   (let* ((entry (nth (random (length *clip*)) *clip*))
          (word (nth 1 entry))
          (sentence (nth 2 entry))
          (context (nth 3 entry)))
-    (push word *review-hist*)
+    (progn
+      (push word *review-hist*)
+      (setf *review-hist* (subseq *review-hist* 0 *review-hist-length*)))
     (when lookup (lookup-dict-string word :force t))
     (format nil "~a~%~%~a~%~%[context]~%~a" word sentence context)))
 
 (defun random-review! ()
   (notify "Review!" (random-review)))
+
+(defun review-history! ()
+  (notify "Review History" (format nil "~s" *review-hist*)))
