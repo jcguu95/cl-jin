@@ -63,7 +63,6 @@
              "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_video.mkv\" &"
              "echo $! > /tmp/recordingpid"))))
 
-(prompt-recording)
 (defun prompt-recording ()
   (if
    ;; FIXME not a robust way to tell if the program is running.
