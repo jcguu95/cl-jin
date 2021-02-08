@@ -2,6 +2,7 @@
 
 (defun notify-send (title content &key (expire-time 0))
   "Example usage: (notify-send \"A\" \"B\" :expire-time 0.2222)."
+  ;; FIXME This does not take care of dbus carefully.
   (uiop:run-program
    (format nil "notify-send \"~a\" \"~a\" -t ~a"
            title content (ceiling (* 1000 expire-time)))))
