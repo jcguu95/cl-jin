@@ -3,5 +3,6 @@
   (:export
 
    :dmenu
+   :notify-send
 
    ))

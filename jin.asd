@@ -4,6 +4,7 @@
   :description "Jin's scripts."
   :version "1.0.0"
   :serial t
-  :depends-on (:uiop :alexandria)
+  :depends-on (:uiop :alexandria :dbus)
   :components ((:file "package")
-               (:file "dmenu")))
+               (:file "dmenu")
+	       (:file "notify-send")))
