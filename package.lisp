@@ -2,10 +2,11 @@
   (:use :cl)
   (:export
 
-   :audio
-   :video
-   :webcam
-   :screencast
+   :record-audio
+   :record-video
+   :record-webcam
+   :record-screencast
    :stop-recording
+   :prompt-recording
 
    ))

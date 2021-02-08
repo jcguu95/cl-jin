@@ -17,7 +17,7 @@
     (uiop:run-program (format nil "sleep 3"))
     (uiop:run-program (format nil "kill -9 ~a" rec-pid))))
 
-(defun screencast ()
+(defun record-screencast ()
   (uiop:run-program
    (format nil "~{~a ~}"
            '("ffmpeg -y" "-f x11grab"
@@ -31,7 +31,7 @@
              "echo $! > /tmp/recordingpid "
              ))))
 
-(defun webcam ()
+(defun record-webcam ()
   ;; TODO How to enable voice recording too?
   (uiop:run-program
   (format nil "~{~a ~}"
@@ -42,7 +42,7 @@
             "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_webcam.mkv\" &"
             "echo $! > /tmp/recordingpid"))))
 
-(defun audio ()
+(defun record-audio ()
   (uiop:run-program
    (format nil "~{~a ~}"
            '("ffmpeg"
@@ -52,7 +52,7 @@
              "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_audio.mp3\" &"
              "echo $! > /tmp/recordingpid"))))
 
-(defun video ()
+(defun record-video ()
   (uiop:run-program
    (format nil "~{~a ~}"
            '("ffmpeg"
@@ -89,7 +89,7 @@
          (format nil "echo -e \"~{~a\\n~}\" | dmenu"
                  '("audio" "video" "webcam" "screencast"))
          :output '(:string :stripped t)) :test #'string=)
-     ("audio" (audio))
-     ("video" (video))
-     ("webcam" (webcam))
-     ("screencast" (screencast)))))
+     ("audio" (record-audio))
+     ("video" (record-video))
+     ("webcam" (record-webcam))
+     ("screencast" (record-screencast)))))
