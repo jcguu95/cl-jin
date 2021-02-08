@@ -8,8 +8,12 @@
 (defun stop-recording ()
   (let* ((pid-file "/tmp/recordingpid")
          (rec-pid (parse-integer (uiop:read-file-string pid-file))))
+    ;; kill it gently
     (uiop:run-program (format nil "kill -15 ~a" rec-pid))
+    ;; FIXME not a robust way to detect if the program is running.
     (uiop:run-program (format nil "rm -f ~a" pid-file))
+    ;; sleep for a few seconds and then kill it forcefully.
+    ;; FIXME this step produces an error if ffmpeg has been successfully killed.
     (uiop:run-program (format nil "sleep 3"))
     (uiop:run-program (format nil "kill -9 ~a" rec-pid))))
 
@@ -58,3 +62,35 @@
              "-c:v libx264 -qp 0 -r 30"
              "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_video.mkv\" &"
              "echo $! > /tmp/recordingpid"))))
+
+(prompt-recording)
+(defun prompt-recording ()
+  (if
+   ;; FIXME not a robust way to tell if the program is running.
+   (uiop:file-exists-p "/tmp/recordingpid")
+
+   ;; If "tmp/recordingpid" exists, treat as if the program
+   ;; hasn't terminated since last time. Ask the user if they
+   ;; want to kill it or not by dmenu. Follow accordingly.
+   (alexandria:switch
+       ((uiop:run-program
+         (format nil
+                 "echo -e \"~{~a\\n~}\" | dmenu -p \"~a\""
+                 '("YES" "NO")
+                 "Previous recording ain't terminated yet. Kill it?")
+         :output '(:string :stripped t))
+        :test #'string=)
+     ("YES" (stop-recording))
+     ("NO" nil))
+
+   ;; Use dmenu to let the user choose which recording style
+   ;; they want.
+   (alexandria:switch
+       ((uiop:run-program
+         (format nil "echo -e \"~{~a\\n~}\" | dmenu"
+                 '("audio" "video" "webcam" "screencast"))
+         :output '(:string :stripped t)) :test #'string=)
+     ("audio" (audio))
+     ("video" (video))
+     ("webcam" (webcam))
+     ("screencast" (screencast)))))
