@@ -8,4 +8,5 @@
   :components ((:file "package")
                (:file "dmenu")
                (:file "notify-send")
+               (:file "org-timestamp")
                (:file "alarm")))

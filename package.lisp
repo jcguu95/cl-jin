@@ -4,5 +4,6 @@
 
    :dmenu
    :notify-send
+   :org-timestamp
 
    ))
