@@ -120,7 +120,7 @@ result to a clip file."
     (progn
       (push word *review-hist*)
       (setf *review-hist* (subseq *review-hist*
-                                  0 *review-hist-length*)))
+                                  0 (min *review-hist-length* (length *review-hist*)))))
 
     ;; if LOOKUP is set T, lookup the string without word selection.
     (when lookup (lookup-dict-string word :force t))
@@ -129,7 +129,8 @@ result to a clip file."
     (format nil "~a~%~%~a~%~%[context]~%~a" word sentence context)))
 
 (defun random-review! ()
-  (notify "Review!" (random-review)))
+  (read-clip)
+  (notify (format nil "Review the word!~%") (random-review)))
 
 (defun review-history! ()
   (notify "Review History" (format nil "~s" *review-hist*)))
