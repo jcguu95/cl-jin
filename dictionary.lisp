@@ -75,7 +75,8 @@ using notify-send."
                    (sentence->dmenu string))))
 
     ;; lookup WORD and push to notification
-    (notify "word.lisp" (lookup-word word))
+   ;(notify "word.lisp" (lookup-word word))
+    (jin:notify-send "word.lisp" (lookup-word word))
 
     ;; if selected WORD isn't in the STRING, strip the STRING
     (unless (member word (sentence->words string)
@@ -130,7 +131,9 @@ result to a clip file."
 
 (defun random-review! ()
   (read-clip)
-  (notify (format nil "Review the word!~%") (random-review)))
+ ;(notify (format nil "Review the word!~%") (random-review)))
+  (jin:notify-send (format nil "Review the word!~%") (random-review)))
 
 (defun review-history! ()
-  (notify "Review History" (format nil "~s" *review-hist*)))
+ ;(notify "Review History" (format nil "~s" *review-hist*)))
+  (jin:notify-send "Review History" (format nil "~s" *review-hist*)))

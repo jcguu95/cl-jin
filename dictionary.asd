@@ -5,6 +5,6 @@
   :version "1.0.0"
   :serial t
   :depends-on (:arrows :alexandria :trivial-clipboard
-               :cl-ppcre :dbus :local-time)
+               :cl-ppcre :dbus :local-time :jin)
   :components ((:file "package")
                (:file "dictionary")))
