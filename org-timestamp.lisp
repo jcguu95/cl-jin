@@ -7,7 +7,8 @@
   (read-from-string
    (uiop:run-program
     (format nil "~a ~a"
-            "emacsclient -e"
+            "emacs -batch -eval"
             (format nil
-                    "'(org-timestamp-from-string \"~a\")'" str))
+                    "\"(progn ~a (print (org-timestamp-from-string \\\"~a\\\")))\""
+                    "(require 'org-element)" str))
     :output '(:string :stripped t))))
