@@ -39,3 +39,7 @@ $ vim /tmp/test.txt -c ":\!paps < % > /tmp/out.pdf"
 + Use format instead of concatenate.
 
 + Add error-throwing for exceptions.
+
+# Tested
+
+Tested for [2021-01-15], [2021-01-22], [2021-02-04], [2021-02-12]

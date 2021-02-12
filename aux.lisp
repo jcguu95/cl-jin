@@ -13,7 +13,7 @@
 (defun metap (column)
   "Check whether the given column consists of the meta data of an
 order."
-  (and (equalp (nth 2 column) "pending")
+  (and (equalp (nth 2 column) "pending") ;; TODO some entries are cancelled, and will raise error.
        (equalp (nth 3 column) "USD")))
 
 (defun entryp (column)
