@@ -13,6 +13,7 @@
            (str (apply #'concatenate 'string strs)))
       ;; Showcase the result.
       str
+      (format t "~a pending order in total." (length *record*))
       ;; Write string to OUTPUT.
       (when output
         (progn
