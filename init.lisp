@@ -70,15 +70,31 @@ concatenate."
     ("IGNORE" "")
     ("e"      "")))
 
-(defun ledger-entry->out (ledger-entry)
+(defun format-ledger-entry-flow (ledger-entry-flow)
+  (format nil "~a    ~a ~a"
+          (flow-account ledger-entry-flow)
+          (flow-unit ledger-entry-flow)
+          (flow-amount ledger-entry-flow)))
+
+(defun format-ledger-entry (ledger-entry)
   "Returns a formatted ledger entry."
-  ;TODO
-  0
-  )
+  (let ((i ledger-entry))
+    (format nil "~a~%~a"
+            (format nil "~a ~a~%;; ~a"
+                    (ledger-entry-date i) ;; FIXME need a timestamp-reformatter
+                    ;; TODO lemme learn how full-fledged parser combinators work and come back to this
+                    (ledger-entry-description i)
+                    (ledger-entry-comment i))
+            (format nil "~{~a~%~}"
+                    (mapcar #'format-ledger-entry-flow
+                            (ledger-entry-flows i))))))
+
+;; TEMPLATE
+;; 2020-06-30 Payment Received - Thank You
+;;   ;;
+;;   Liabilities:Credit Cards:AmEx Delta Skymiles Gold Card X1009    USD 7.49
+;;   Other:Unknown:Duplicate
 
 ;;; testing zone
-;;; testing zone
-(setf *data* (cdr (csv->rows "./data/Chase3869_sample.CSV")))
-(mapcar #'Chase-3869---row->ledger-entry *data*)
-;;; testing zone
-;;; testing zone
+(setf *data* (cdr (csv->rows "/home/jin/.quicklisp/local-projects/jin-original/ledger-formatter/data/Chase3869_sample.CSV")))
+(setf tmp/entries (mapcar #'Chase-3869---row->ledger-entry *data*))
