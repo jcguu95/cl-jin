@@ -83,6 +83,7 @@ concatenate."
             (format nil "~a ~a~%;; ~a"
                     (ledger-entry-date i) ;; FIXME need a timestamp-reformatter
                     ;; TODO lemme learn how full-fledged parser combinators work and come back to this
+                    ;; Or I should just us `rx` as in elisp... haven't check `cl-ppcre`
                     (ledger-entry-description i)
                     (ledger-entry-comment i))
             (format nil "~{~a~%~}"
@@ -96,5 +97,16 @@ concatenate."
 ;;   Other:Unknown:Duplicate
 
 ;;; testing zone
-(setf *data* (cdr (csv->rows "/home/jin/.quicklisp/local-projects/jin-original/ledger-formatter/data/Chase3869_sample.CSV")))
+(defvar amex-21009 "./data/amex-credit-21009.sample.csv")
+(defvar amex-71008 "./data/amex-credit-71008.sample.csv")
+(defvar boa-7204 "./data/boa-saving-7204.sample.csv")
+(defvar cs-5372 "./data/charles-schwab-checking-5372.sample.csv")
+(defvar cs-2737 "./data/charles-schwab-individual-2737.sample.csv")
+(defvar chase-5688 "./data/chase-checking-5688.sample.csv")
+(defvar chase-3869 "./data/chase-credit-3869.sample.csv")
+(defvar chase-7685 "./data/chase-credit-7685.sample.csv")
+
+(setf *data* (cdr (csv->rows chase-3869)))
 (setf tmp/entries (mapcar #'Chase-3869---row->ledger-entry *data*))
+
+
