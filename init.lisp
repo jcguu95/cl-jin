@@ -3,10 +3,6 @@
 ;; 2. ledger-entry printer!
 ;; 3. row->ledger-entry functions for other accounts (so far only done for chase3869)
 
-(ql:quickload :alexandria)
-(ql:quickload :arrows)
-(ql:quickload :cl-csv)
-(ql:quickload :parse-float)
 
 (defstruct ledger-entry
   date description comment flows)
