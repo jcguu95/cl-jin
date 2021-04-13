@@ -1,6 +1,6 @@
 #-asdf3.1 (error "ASDF 3.1 or bust!")
 
-(asdf:defsystem :jin
+(asdf:defsystem :jin-utils
   :description "Jin's scripts."
   :version "1.0.0"
   :serial t

@@ -1,4 +1,4 @@
-(in-package :jin)
+(in-package :jin-utils)
 
 (defun org-timestamp (str)
   "Convert org-mode time stamp to time."

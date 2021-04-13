@@ -1,6 +1,6 @@
 ;; Deprecated.. as I cannot handle cl-binaural with sanity.
 ;;
-;; (in-package :jin)
+;; (in-package :jin-utils)
 ;;
 ;; (defparameter *mixer*
 ;;   (cl-binaural::create-mixer))

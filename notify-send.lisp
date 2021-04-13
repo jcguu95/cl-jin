@@ -1,4 +1,4 @@
-(in-package :jin)
+(in-package :jin-utils)
 
 ;; (defun notify-send (title content &key (expire-time 0))
 ;;   "Example usage: (notify-send \"A\" \"B\" :expire-time 0.2222)."

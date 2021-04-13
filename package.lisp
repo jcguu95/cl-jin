@@ -1,4 +1,4 @@
-(defpackage jin
+(defpackage jin-utils
   (:use :cl)
   (:export
 
