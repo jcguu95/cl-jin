@@ -20,5 +20,9 @@ milisecond; 0 means infinite while (-1) means default."
                        "org.freedesktop.Notifications")
       (notifications "org.freedesktop.Notifications" "Notify"
                      "Test" 0 "" title content '() '() expire-timeout))))
+
+;; FIXME it doesn't work on the fly on my guix machine
+
+;;; Usage
 ;; (notify-send "A" "B" :expire-timeout (-1))
 ;; (notify-send "A" "B" :expire-timeout 2000)
