@@ -6,6 +6,8 @@
 ;; #'random-review!
 ;; #'review-history!
 
+(defparameter *last-context* nil)
+
 (defun lint (str)
   "Lint the marks in the input string STR."
   (arrows:-<> str
@@ -29,9 +31,22 @@
     (string-downcase (lint sentence)))
    :test #'string-equal))
 
+(defun get-context ()
+  "Push the current window info to the global variable
+*LAST-CONTEXT*, before the current window info is unaccessible
+after calling dmenu."
+  (let ((context (uiop:run-program
+                  ;; returns the current window name
+                  (format nil "DISPLAY=:0 && xdotool getwindowfocus getwindowname")
+                  :output '(:string :stripped t))))
+    (setf *last-context* context)))
+
 (defun sentence->dmenu (sentence)
   "Break the input SENTENCE into a list of words. Let the user
 choose a word by using dmenu. Return the selected word."
+  ;; First get context before the current window info is cleared
+  ;; by dmenu.
+  (get-context)
   ;; Usage: set sentence to be (trivial-clipboard:text)
   (uiop:run-program
    (format nil "echo -e \"~a\" | dmenu"
@@ -86,16 +101,11 @@ using notify-send. Return the string to be written to file later."
 
     ;; wrap entry with time and context; render as a string.
     (let ((time (local-time:now))
-          (context (uiop:run-program
-                    ;; returns the current window name
-                    (format nil
-                            "xdotool getwindowfocus getwindowname")
-                    :output '(:string :stripped t)))
           (comment (uiop:run-program
-                    (format nil "echo -e \"Comment: \" | dmenu")
+                    (format nil "echo \"\" | dmenu -p \"Comment: \" ")
                     :output '(:string :stripped t))))
       (format nil "(\"~a\"~% \"~a\"~% ~s~% ~s ~% ~s)~%~%"
-              time word string context comment))))
+              time word string *last-context* comment))))
 
 (defun lookup-dict! ()
   "Let the user pick a word from the string in the clipboard
