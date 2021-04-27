@@ -54,17 +54,18 @@ as a string."
            *dict-dir* word)
    :output '(:string :stripped t)))
 
-(defun notify (title content)
-  "Send notification using dmenu."
+(defun notify (title content &key (expire-timeout 0))
+  "Send notification using dmenu. EXPIRE-TIMEOUT is an INT32 in
+milisecond; 0 means infinite while (-1) means default."
   ;; TODO Put this to another personal package.
   ;; taken from https://github.com/death/dbus/blob/master/examples/notify.lisp
-  ;; TODO Add argument for controlling how long it shows.
+  ;;
   (dbus:with-open-bus (bus (dbus:session-server-addresses))
     (dbus:with-introspected-object
         (notifications bus "/org/freedesktop/Notifications"
                        "org.freedesktop.Notifications")
       (notifications "org.freedesktop.Notifications" "Notify"
-                     "Test" 0 "" title content '() '() -1))))
+                     "Test" 0 "" title content '() '() expire-timeout))))
 
 (defun lookup-dict-string (string &key force)
   "Let the user pick a word in the input STRING using dmenu.
@@ -76,7 +77,7 @@ using notify-send."
 
     ;; lookup WORD and push to notification
    ;(notify "word.lisp" (lookup-word word))
-    (jin:notify-send "word.lisp" (lookup-word word))
+    (jin-utils:notify-send "word.lisp" (lookup-word word))
 
     ;; if selected WORD isn't in the STRING, strip the STRING
     (unless (member word (sentence->words string)
@@ -132,8 +133,8 @@ result to a clip file."
 (defun random-review! ()
   (read-clip)
  ;(notify (format nil "Review the word!~%") (random-review)))
-  (jin:notify-send (format nil "Review the word!~%") (random-review)))
+  (jin-utils:notify-send (format nil "Review the word!~%") (random-review)))
 
 (defun review-history! ()
  ;(notify "Review History" (format nil "~s" *review-hist*)))
-  (jin:notify-send "Review History" (format nil "~s" *review-hist*)))
+  (jin-utils:notify-send "Review History" (format nil "~s" *review-hist*)))
