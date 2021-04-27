@@ -70,7 +70,7 @@ milisecond; 0 means infinite while (-1) means default."
 (defun lookup-dict-string (string &key force)
   "Let the user pick a word in the input STRING using dmenu.
 Lookup the selected word from the dictionary. Announce the result
-using notify-send."
+using notify-send. Return the string to be written to file later."
   (let* ((word (if force
                    string
                    (sentence->dmenu string))))
@@ -86,9 +86,16 @@ using notify-send."
 
     ;; wrap entry with time and context; render as a string.
     (let ((time (local-time:now))
-          (context ""))
-      (format nil "(\"~a\"~% \"~a\"~% ~s~% ~s)~%~%"
-              time word string context))))
+          (context (uiop:run-program
+                    ;; returns the current window name
+                    (format nil
+                            "xdotool getwindowfocus getwindowname")
+                    :output '(:string :stripped t)))
+          (comment (uiop:run-program
+                    (format nil "echo -e \"Comment: \" | dmenu")
+                    :output '(:string :stripped t))))
+      (format nil "(\"~a\"~% \"~a\"~% ~s~% ~s ~% ~s)~%~%"
+              time word string context comment))))
 
 (defun lookup-dict! ()
   "Let the user pick a word from the string in the clipboard
