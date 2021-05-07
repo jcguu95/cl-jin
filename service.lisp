@@ -47,6 +47,14 @@ leave (non-locally?)."
     (ensure-directories-exist
      (concatenate 'string *root* (name s) "/")))
 
+(defun latest-launch (service)
+  "Return the timestamp (in the sense of the package :LOCAL-TIME)
+of latest report of SERVICE."
+  (read-from-string
+   (file-namestring
+    (car (last (uiop:directory-files
+                (log-dir service)))))))
+
 (defgeneric dispatch (s)
   (:documentation
    "Dispatch the SERVICE as a thread. Log everything into the
@@ -62,8 +70,7 @@ leave (non-locally?)."
   (let* ((now (local-time:now))
          (log-file (concatenate 'string
                                 (log-dir service)
-                                (prin1-to-string now)
-                                ".sexp"))
+                                (prin1-to-string now)))
          (log ""))
 
     (bt:make-thread

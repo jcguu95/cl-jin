@@ -4,7 +4,7 @@
   :description "Jin's lisp service."
   :version "1.0.0"
   :serial t
-  :depends-on (:uiop :local-time :bt-semaphore)
+  :depends-on (:uiop :local-time :bordeaux-threads)
   :components ((:file "package")
                (:file "service")
                (:file "example")
