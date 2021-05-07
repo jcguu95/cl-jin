@@ -1,4 +1,4 @@
-(in-package :jin-utils)
+(in-package :jin.utils)
 
 ;; wifi
 ;; code taken from https://github.com/stumpwm/stumpwm-contrib/blob/master/modeline/wifi/wifi.lisp

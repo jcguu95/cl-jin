@@ -1,4 +1,4 @@
-(in-package :jin-utils)
+(in-package :jin.utils)
 
 (defvar *output-file* "/tmp/jin-dmenu.lisp.log")
 

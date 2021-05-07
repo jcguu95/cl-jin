@@ -1,4 +1,4 @@
-(in-package :jin-utils)
+(in-package :jin.utils)
 
 ;;; CPU usage
 ;;; code taken from alezost
