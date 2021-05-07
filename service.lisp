@@ -2,8 +2,8 @@
 
 (local-time:enable-read-macros)
 
-(cl-user::defparameter *root*
-  (cl-user::ensure-directories-exist "~/.local/lisp-service/"))
+(defparameter *root*
+  (ensure-directories-exist "~/.local/lisp-service/"))
 
 (defmacro call-with-error-barfed-and-ignored (body)
   "Call the body normally if there is no error. Otherwise, print
