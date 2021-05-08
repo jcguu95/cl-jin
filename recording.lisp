@@ -2,18 +2,25 @@
 
 (defparameter *processes* nil)
 
+;; TODO use jin.service to start and log recordings.
+
 (defun record-screencast ()
   "With :wait being NIL,this will return a process. I can then
 terminate that process by sb-ext:process-kill."
   (push
    (sb-ext:run-program
-    "/usr/bin/ffmpeg"                   ; TODO make it portable
-    `("-y" "-f" "x11grab" "-framerate" "60"
+    (whereis "ffmpeg")
+    `("-y" "-f" "x11grab"
+           "-framerate" "60"
            "-s" ,(grab-dimension)
            "-i" ,(sb-ext:posix-getenv "DISPLAY")
-           "-f" "alsa" "-i" "hw:0,0"
+           "-f" "alsa"
+           "-i" "hw:0,0"
            "-r" "30"
-           "-c:v" "h264" "-crf" "0" "-preset" "ultrafast" "-c:a" "aac"
+           "-c:v" "h264"
+           "-crf" "0"
+           "-preset" "ultrafast"
+           "-c:a" "aac"
            ,(concatenate 'string (make-prefix) ".mp4"))
     :output *standard-output*
     :error *standard-output*
@@ -25,7 +32,7 @@ terminate that process by sb-ext:process-kill."
 terminate that process by sb-ext:process-kill."
   (push
    (sb-ext:run-program
-    "/usr/bin/ffmpeg"                   ; TODO make it portable
+    (whereis "ffmpeg")
     `("-f" "v4l2" "-i" "/dev/video0"
            "-video_size" "640x480"
            ,(concatenate 'string (make-prefix) ".mkv"))
@@ -39,7 +46,7 @@ terminate that process by sb-ext:process-kill."
 terminate that process by sb-ext:process-kill."
   (push
    (sb-ext:run-program
-    "/usr/bin/ffmpeg"                   ; TODO make it portable
+    (whereis "ffmpeg")
     `("-f" "alsa" "-i" "hw:0,0"
            "-ab" "50k" "-c:a" "mp3"
            ,(concatenate 'string (make-prefix) ".mp3"))
@@ -53,7 +60,7 @@ terminate that process by sb-ext:process-kill."
 terminate that process by sb-ext:process-kill."
   (push
    (sb-ext:run-program
-    "/usr/bin/ffmpeg"                   ; TODO make it portable
+    (whereis "ffmpeg")
     `("-f" "x11grab"
            "-s" ,(grab-dimension)
            "-i" ,(sb-ext:posix-getenv "DISPLAY")
@@ -80,3 +87,4 @@ terminate that process by sb-ext:process-kill."
         ("video" (record-video))
         ("webcam" (record-webcam))
         ("screencast" (record-screencast)))))
+

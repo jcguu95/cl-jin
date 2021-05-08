@@ -11,6 +11,14 @@
                           #\-
                           (:HOUR 2) (:MIN 2) (:SEC 2)))))
 
+(defun whereis (target)
+  (string-right-trim
+   (format nil "~%")
+   (with-output-to-string (out)
+     (uiop:run-program
+      (format nil "whereis ~a | cut -d' ' -f2" target)
+      :output out))))
+
 (defun grab-dimension ()
   (string-right-trim
    (format nil "~%")
@@ -27,7 +35,7 @@
        (out)
      (with-input-from-string
          (in (format nil "~{~a~%~}" candidates))
-       (sb-ext:run-program "/usr/local/bin/dmenu" ; TODO make it portable
+       (sb-ext:run-program (whereis "dmenu")
                            `("-p" ,prompt)
                            :input in :output out)))))
 
