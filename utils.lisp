@@ -11,6 +11,19 @@
                           #\-
                           (:HOUR 2) (:MIN 2) (:SEC 2)))))
 
+(defun grab-dimension ()
+  (string-right-trim
+   (format nil "~%")
+   (with-output-to-string (s)
+     (uiop:run-program
+      ;; TODO get rid of bashism
+      "xdpyinfo | grep dimensions | awk '{print $2;}'"
+      :output s))))
+
+(defun any-alive-p ()
+  "Return if any recording process is alive."
+  (eval `(or ,@(mapcar #'sb-ext:process-alive-p *processes*))))
+
 (defun kill-all (&key force)
   (let ((sig (if force 9 15)))
     (mapcar (lambda (x)
