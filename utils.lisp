@@ -27,12 +27,14 @@
        (out)
      (with-input-from-string
          (in (format nil "~{~a~%~}" candidates))
-       (sb-ext:run-program "/usr/local/bin/dmenu" `("-p" ,prompt)
+       (sb-ext:run-program "/usr/local/bin/dmenu" ; TODO make it portable
+                           `("-p" ,prompt)
                            :input in :output out)))))
 
 (defun any-alive-p ()
   "Return if any recording process is alive."
-  (eval `(or ,@(mapcar #'sb-ext:process-alive-p *processes*))))
+  (eval `(or ,@(mapcar #'sb-ext:process-alive-p
+                       *processes*))))
 
 (defun kill-all (&key force)
   (let ((sig (if force 9 15)))
