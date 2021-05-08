@@ -6,4 +6,5 @@
   :serial t
   :depends-on (:uiop :alexandria)
   :components ((:file "package")
+               (:file "utils")
                (:file "recording")))

@@ -3,6 +3,8 @@
 ;
 ; Most codes are taken from Luke Smith.
 
+(defparameter *processes* nil)
+
 (in-package :recording)
 
 (defun stop-recording ()
@@ -42,7 +44,21 @@
             "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_webcam.mkv\" &"
             "echo $! > /tmp/recordingpid"))))
 
-;; (defun record-audio ()
+(defun record-webcam ()
+  "With :wait being NIL,this will return a process. I can then
+terminate that process by sb-ext:process-kill."
+  (push
+   (sb-ext:run-program
+    "/usr/bin/ffmpeg"                   ; TODO make it portable
+    `("-f" "v4l2" "-i" "/dev/video0"
+           "-video_size" "640x480"
+           ,(concatenate 'string (make-prefix) ".mkv"))
+    :output *standard-output*
+    :error *standard-output*
+    :wait nil)
+   *processes*))
+
+;; (defun old-record-audio ()
 ;;   (uiop:run-program
 ;;    (format nil "~{~a ~}"
 ;;            '("ffmpeg"
@@ -51,8 +67,6 @@
 ;;              "-c:a mp3"
 ;;              "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_audio.mp3\" &"
 ;;              "echo $! > /tmp/recordingpid"))))
-
-(defparameter *processes* nil)
 
 (defun record-audio ()
   "With :wait being NIL,this will return a process. I can then
