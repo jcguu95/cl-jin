@@ -47,6 +47,10 @@ leave (non-locally?)."
     (ensure-directories-exist
      (concatenate 'string *root* (name s) "/")))
 
+(defmethod log-dir ((s string))
+    (ensure-directories-exist
+     (concatenate 'string *root* s "/")))
+
 (defun latest-launch (service)
   "Return the timestamp (in the sense of the package :LOCAL-TIME)
 of latest report of SERVICE."
@@ -131,3 +135,17 @@ of latest report of SERVICE."
 
     (format t "See log file at:")
     log-file))
+
+(defun help ()
+  (format t "Make a service instance by~%~%")
+  (format t "  ~s"
+          '(make-instance
+            'service
+            :name "example"
+            :action '(lambda ()
+                      (uiop:run-program
+                       "/path/to/example"
+                       :output *standard-output*
+                       :error-output *standard-output*))))
+  (format t "~%~%and dispatch by~%~%")
+  (format t "  (dispatch it)."))
