@@ -33,17 +33,6 @@
              "echo $! > /tmp/recordingpid "
              ))))
 
-(defun old-record-webcam ()
-  ;; TODO How to enable voice recording too?
-  (uiop:run-program
-  (format nil "~{~a ~}"
-          '("ffmpeg"
-            "-f v4l2"
-            "-i /dev/video0"
-            "-video_size 640x480"
-            "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_webcam.mkv\" &"
-            "echo $! > /tmp/recordingpid"))))
-
 (defun record-webcam ()
   "With :wait being NIL,this will return a process. I can then
 terminate that process by sb-ext:process-kill."
@@ -57,16 +46,6 @@ terminate that process by sb-ext:process-kill."
     :error *standard-output*
     :wait nil)
    *processes*))
-
-;; (defun old-record-audio ()
-;;   (uiop:run-program
-;;    (format nil "~{~a ~}"
-;;            '("ffmpeg"
-;;              "-f alsa -i hw:0,0"
-;;              "-ab 50k"
-;;              "-c:a mp3"
-;;              "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_audio.mp3\" &"
-;;              "echo $! > /tmp/recordingpid"))))
 
 (defun record-audio ()
   "With :wait being NIL,this will return a process. I can then
