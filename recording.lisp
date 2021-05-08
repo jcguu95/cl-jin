@@ -2,8 +2,6 @@
 
 (defparameter *processes* nil)
 
-;; TODO use jin.service to start and log recordings.
-
 (defun record-screencast ()
   "With :wait being NIL,this will return a process. I can then
 terminate that process by sb-ext:process-kill."
@@ -88,3 +86,32 @@ terminate that process by sb-ext:process-kill."
         ("webcam" (record-webcam))
         ("screencast" (record-screencast)))))
 
+;; TODO use jin.service to start and log recordings.
+;;
+;; --  Under Construction --
+;;
+;;   FIXME The output is obscured..
+;;
+;; (make-instance 'jin.service::service
+;;                :name "testing"
+;;                :action
+;;                '(lambda ()
+;;                  (let ((process (sb-ext:run-program
+;;                                  (whereis "ffmpeg")
+;;                                  `("-y" "-f" "x11grab"
+;;                                         "-framerate" "60"
+;;                                         "-s" ,(grab-dimension)
+;;                                         "-i" ,(sb-ext:posix-getenv "DISPLAY")
+;;                                         "-f" "alsa"
+;;                                         "-i" "hw:0,0"
+;;                                         "-r" "30"
+;;                                         "-c:v" "h264"
+;;                                         "-crf" "0"
+;;                                         "-preset" "ultrafast"
+;;                                         "-c:a" "aac"
+;;                                         ,(concatenate 'string (make-prefix) ".mp4"))
+;;                                  :output *standard-output*
+;;                                  :error *standard-output*
+;;                                  :wait nil)))
+;;                    (push process *processes*)
+;;                    process)))
