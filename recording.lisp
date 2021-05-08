@@ -20,18 +20,27 @@
     (uiop:run-program (format nil "kill -9 ~a" rec-pid))))
 
 (defun record-screencast ()
-  (uiop:run-program
-   (format nil "~{~a ~}"
-           '("ffmpeg -y" "-f x11grab"
-             "-framerate 60"
-             "-s \"$(xdpyinfo | grep dimensions | awk '{print $2;}')\" "
-             "-i \"$DISPLAY\" "
-             "-f alsa -i hw:0,0 "
-             "-r 30 "
-             "-c:v h264 -crf 0 -preset ultrafast -c:a aac "
-             " \"$HOME/$(date '+%Y-%m-%d-%H%M%S')_screencast.mp4\" & "
-             "echo $! > /tmp/recordingpid "
-             ))))
+  "With :wait being NIL,this will return a process. I can then
+terminate that process by sb-ext:process-kill."
+  (push
+   (sb-ext:run-program
+    "/usr/bin/ffmpeg"                   ; TODO make it portable
+    `("-y" "-f" "x11grab" "-framerate" "60"
+           "-s" ,(string-right-trim
+                  (format nil "~%")
+                  (with-output-to-string (s)
+                    (uiop:run-program
+                     "xdpyinfo | grep dimensions | awk '{print $2;}'"
+                     :output s)))
+           "-i" ,(sb-ext:posix-getenv "DISPLAY")
+           "-f" "alsa" "-i" "hw:0,0"
+           "-r" "30"
+           "-c:v" "h264" "-crf" "0" "-preset" "ultrafast" "-c:a" "aac"
+           ,(concatenate 'string (make-prefix) ".mp4"))
+    :output *standard-output*
+    :error *standard-output*
+    :wait nil)
+   *processes*))
 
 (defun record-webcam ()
   "With :wait being NIL,this will return a process. I can then
@@ -55,15 +64,7 @@ terminate that process by sb-ext:process-kill."
     "/usr/bin/ffmpeg"                   ; TODO make it portable
     `("-f" "alsa" "-i" "hw:0,0"
            "-ab" "50k" "-c:a" "mp3"
-           ,(concatenate 'string
-                         (sb-ext:posix-getenv "HOME")
-                         "/"
-                         (local-time:format-timestring
-                          t (local-time:now)
-                          :format '((:YEAR 4) (:MONTH 2) (:DAY 2)
-                                    #\-
-                                    (:HOUR 2) (:MIN 2) (:SEC 2)))
-                         ".mp3"))
+           ,(concatenate 'string (make-prefix) ".mp3"))
     :output *standard-output*
     :error *standard-output*
     :wait nil)
