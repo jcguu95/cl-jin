@@ -66,25 +66,16 @@ terminate that process by sb-ext:process-kill."
 
 (defun prompt-recording ()
   (if (any-alive-p)
-
       (alexandria:switch
-          ((uiop:run-program
-            (format nil
-                    "echo -e \"~{~a\\n~}\" | dmenu -p \"~a\""
-                    '("YES" "NO")
-                    "Previous recording ain't terminated yet. Kill it?")
-            :output '(:string :stripped t))
+          ((dmenu '("YES" "NO")
+                  "Kill previous recordings?")
            :test #'string=)
         ("YES" (kill-all))
         ("NO" nil))
-
-      ;; Use dmenu to let the user choose which recording style
-      ;; they want.
       (alexandria:switch
-          ((uiop:run-program
-            (format nil "echo -e \"~{~a\\n~}\" | dmenu"
-                    '("audio" "video" "webcam" "screencast"))
-            :output '(:string :stripped t)) :test #'string=)
+          ((dmenu '("audio" "video" "webcam" "screencast")
+                  "Select an option to start recording.")
+           :test #'string=)
         ("audio" (record-audio))
         ("video" (record-video))
         ("webcam" (record-webcam))

@@ -20,6 +20,16 @@
       "xdpyinfo | grep dimensions | awk '{print $2;}'"
       :output s))))
 
+(defun dmenu (candidates &optional prompt)
+  (string-right-trim
+   '(#\Newline)
+   (with-output-to-string
+       (out)
+     (with-input-from-string
+         (in (format nil "~{~a~%~}" candidates))
+       (sb-ext:run-program "/usr/local/bin/dmenu" `("-p" ,prompt)
+                           :input in :output out)))))
+
 (defun any-alive-p ()
   "Return if any recording process is alive."
   (eval `(or ,@(mapcar #'sb-ext:process-alive-p *processes*))))
