@@ -43,13 +43,27 @@ leave (non-locally?)."
    "Generate the PATH-DIR for the service S. All log files go
   into it."))
 
-(defmethod log-dir ((s service))
-    (ensure-directories-exist
-     (concatenate 'string *root* (name s) "/")))
-
 (defmethod log-dir ((s string))
     (ensure-directories-exist
      (concatenate 'string *root* s "/")))
+
+(defmethod log-dir ((s service))
+  (log-dir (name s)))
+
+(defgeneric logs (s)
+  (:documentation
+   "Return all logs for S."))
+
+(defmethod logs ((s string))
+  "Return all logs for S."
+  (mapcar #'uiop:read-file-form
+          (reverse
+           (uiop:directory-files
+            (log-dir s)))))
+
+(defmethod logs ((s service))
+  "Return all logs for S."
+  (logs (name s)))
 
 (defun latest-launch (service)
   "Return the timestamp (in the sense of the package :LOCAL-TIME)
@@ -126,8 +140,13 @@ of latest report of SERVICE."
                   :action (action service)
                   :multi-return
                   (with-output-to-string (str)
-                    (print-readably multi-return
-                                    str))
+                    (print-readably
+                     ;; TODO Wrong! Should instead replace each
+                     ;; non-readably-printable stuff by
+                     ;; (:unreadable "stuff"), instead of
+                     ;; print-readably.
+                     multi-return
+                     str))
                   :log log)
             ;; *standard-output*)
            )
