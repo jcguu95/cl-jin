@@ -31,7 +31,7 @@
              "echo $! > /tmp/recordingpid "
              ))))
 
-(defun record-webcam ()
+(defun old-record-webcam ()
   ;; TODO How to enable voice recording too?
   (uiop:run-program
   (format nil "~{~a ~}"
@@ -42,15 +42,39 @@
             "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_webcam.mkv\" &"
             "echo $! > /tmp/recordingpid"))))
 
+;; (defun record-audio ()
+;;   (uiop:run-program
+;;    (format nil "~{~a ~}"
+;;            '("ffmpeg"
+;;              "-f alsa -i hw:0,0"
+;;              "-ab 50k"
+;;              "-c:a mp3"
+;;              "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_audio.mp3\" &"
+;;              "echo $! > /tmp/recordingpid"))))
+
+(defparameter *processes* nil)
+
 (defun record-audio ()
-  (uiop:run-program
-   (format nil "~{~a ~}"
-           '("ffmpeg"
-             "-f alsa -i hw:0,0"
-             "-ab 50k"
-             "-c:a mp3"
-             "\"$HOME/$(date '+%Y-%m-%d-%H%M%S')_audio.mp3\" &"
-             "echo $! > /tmp/recordingpid"))))
+  "With :wait being NIL,this will return a process. I can then
+terminate that process by sb-ext:process-kill."
+  (push
+   (sb-ext:run-program
+    "/usr/bin/ffmpeg"                   ; TODO make it portable
+    `("-f" "alsa" "-i" "hw:0,0"
+           "-ab" "50k" "-c:a" "mp3"
+           ,(concatenate 'string
+                         (sb-ext:posix-getenv "HOME")
+                         "/"
+                         (local-time:format-timestring
+                          t (local-time:now)
+                          :format '((:YEAR 4) (:MONTH 2) (:DAY 2)
+                                    #\-
+                                    (:HOUR 2) (:MIN 2) (:SEC 2)))
+                         ".mp3"))
+    :output *standard-output*
+    :error *standard-output*
+    :wait nil)
+   *processes*))
 
 (defun record-video ()
   (uiop:run-program
