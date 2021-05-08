@@ -55,6 +55,35 @@ of latest report of SERVICE."
     (car (last (uiop:directory-files
                 (log-dir service)))))))
 
+(defgeneric print-readably (object stream))
+(defmethod print-readably ((object cons) stream)
+  (let ((list object))
+    (princ "(" stream)
+    (print-readably (car list) stream)
+    (loop
+      :while (consp (cdr list))
+      :do (princ " " stream)
+          (pop list)
+          (print-readably (car list) stream))
+    (if (null (cdr list))
+        (progn (princ ")" stream) nil)
+        (progn (princ " . " stream)
+               (print-readably (cdr list) stream)
+               (princ ")" stream)
+               nil))))
+
+(defmethod print-readably ((object t) stream)
+  (handler-case
+      (let ((*print-readably* t))
+        (prin1-to-string object))
+    (:no-error (result)
+      (write-string result stream))
+    (error ()
+      (let ((*print-readably* nil))
+        (prin1 (list :unreadably-printable-flag
+                     (prin1-to-string object))
+               stream)))))
+
 (defgeneric dispatch (s)
   (:documentation
    "Dispatch the SERVICE as a thread. Log everything into the
@@ -78,7 +107,7 @@ of latest report of SERVICE."
        (let (return)
          (let* ((s (make-string-output-stream))
                 (*standard-output* s))
-           (setf return (multiple-value-list
+           (setf multi-return (multiple-value-list
                          (call-with-error-barfed-and-ignored
                           (funcall (eval (action service))))))
            (setf log (get-output-stream-string s)))
@@ -87,13 +116,18 @@ of latest report of SERVICE."
              (*standard-output* log-file :direction :output
                                          :if-exists :append
                                          :if-does-not-exist :create)
-
-
            (format t "(~%~%~{  ~s~%~%~})"
-                   (list :time now
-                         :action (action service)
-                         :return return
-                         :log log))))))
+           ;; (print-readably
+            (list :time now
+                  :action (action service)
+                  :multi-return
+                  (with-output-to-string (str)
+                    (print-readably multi-return
+                                    str))
+                  :log log)
+            ;; *standard-output*)
+           )
+           ))))
 
     (format t "See log file at:")
     log-file))
