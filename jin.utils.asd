@@ -4,7 +4,8 @@
   :description "Jin's scripts."
   :version "1.0.0"
   :serial t
-  :depends-on (:uiop :alexandria :dbus :cl-ppcre :trivial-battery :stumpwm)
+  :depends-on (:uiop :alexandria :dbus :cl-ppcre :stumpwm
+                     :trivial-battery :jin.service)
   :components ((:file "package")
                (:file "dmenu")
                (:file "notify-send")
@@ -12,4 +13,6 @@
                (:file "cpu")
                (:file "wifi")
                (:file "battery")
+               (:file "brightness")
+               (:file "audio-volume")
                ))

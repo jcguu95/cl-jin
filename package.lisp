@@ -10,4 +10,9 @@
    :echo-wifi-state
    :echo-battery-state
 
+   :set-brightness
+
+   :alter-audio-volume
+   :toggle-mute-audio
+   :normalize-audio
    ))
