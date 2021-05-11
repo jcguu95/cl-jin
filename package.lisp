@@ -17,4 +17,5 @@
    :alter-audio-volume
    :toggle-mute-audio
    :normalize-audio
+   :audio-volume
    ))

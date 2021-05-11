@@ -49,3 +49,11 @@
                                :error *standard-output*)))))
     (jin.utils:notify-send "Audio Volume" "normalize audio")
     (jin.service:dispatch service)))
+
+(defun audio-volume ()
+  (string-trim '(#\Newline)
+               (with-output-to-string (s)
+                 (uiop:run-program
+                  "amixer get Master | grep 'Front Left' | grep -o '[0-9]*%'"
+                  :output s))))
+(audio-volume)
