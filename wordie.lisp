@@ -1,4 +1,4 @@
-(in-package :dictionary)
+(in-package :jin.wordie)
 
 ;; readme
 ;; entry points
@@ -92,7 +92,7 @@ using notify-send. Return the string to be written to file later."
 
     ;; lookup WORD and push to notification
    ;(notify "word.lisp" (lookup-word word))
-    (jin-utils:notify-send "word.lisp" (lookup-word word))
+    (jin.utils:notify-send "word.lisp" (lookup-word word))
 
     ;; if selected WORD isn't in the STRING, strip the STRING
     (unless (member word (sentence->words string)
@@ -150,8 +150,8 @@ result to a clip file."
 (defun random-review! ()
   (read-clip)
  ;(notify (format nil "Review the word!~%") (random-review)))
-  (jin-utils:notify-send (format nil "Review the word!~%") (random-review)))
+  (jin.utils:notify-send (format nil "Review the word!~%") (random-review)))
 
 (defun review-history! ()
  ;(notify "Review History" (format nil "~s" *review-hist*)))
-  (jin-utils:notify-send "Review History" (format nil "~s" *review-hist*)))
+  (jin.utils:notify-send "Review History" (format nil "~s" *review-hist*)))

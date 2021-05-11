@@ -1,4 +1,4 @@
-(defpackage dictionary
+(defpackage jin.wordie
   (:use :cl)
   (:export
 
