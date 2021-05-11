@@ -7,6 +7,7 @@
   :depends-on (:uiop :alexandria :dbus :cl-ppcre :stumpwm
                      :trivial-battery :jin.service)
   :components ((:file "package")
+               (:file "whereis")
                (:file "dmenu")
                (:file "notify-send")
                (:file "org-timestamp")
