@@ -21,4 +21,5 @@ dark, can set n to be 0.5 for example."
                                   "/usr/bin/xrandr"
                                   ',(list "--output" (xrandr-output)
                                           "--brightness" (format nil "~2$" n)))))))
+        (jin.utils:notify-send "Brightness" (format nil "set to ~2$" n) 5000)
         (jin.service:dispatch service))))
