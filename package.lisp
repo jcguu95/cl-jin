@@ -3,6 +3,7 @@
   (:export
 
    :dmenu
+   :whereis
    :notify-send
    :org-timestamp
 
