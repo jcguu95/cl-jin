@@ -5,6 +5,7 @@
    :dmenu
    :whereis
    :notify-send
+   :notify-send-using-dbus
    :org-timestamp
 
    :echo-cpu-state
