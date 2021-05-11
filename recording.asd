@@ -4,7 +4,7 @@
   :description "Recording related shell scripts elevated into their lispy form."
   :version "1.0.0"
   :serial t
-  :depends-on (:uiop :alexandria)
+  :depends-on (:uiop :alexandria :jin.utils)
   :components ((:file "package")
                (:file "utils")
                (:file "recording")))
