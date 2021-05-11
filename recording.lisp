@@ -1,5 +1,7 @@
 (in-package :recording)
 
+;; TODO use jin.service to launch recordings.
+;;
 (defparameter *processes* nil)
 
 (defun record-screencast ()
@@ -7,7 +9,7 @@
 terminate that process by sb-ext:process-kill."
   (push
    (sb-ext:run-program
-    (whereis "ffmpeg")
+    (jin.utils:whereis "ffmpeg")
     `("-y" "-f" "x11grab"
            "-framerate" "60"
            "-s" ,(grab-dimension)
@@ -30,7 +32,7 @@ terminate that process by sb-ext:process-kill."
 terminate that process by sb-ext:process-kill."
   (push
    (sb-ext:run-program
-    (whereis "ffmpeg")
+    (jin.utils:whereis "ffmpeg")
     `("-f" "v4l2" "-i" "/dev/video0"
            "-video_size" "640x480"
            ,(concatenate 'string (make-prefix) ".mkv"))
@@ -44,7 +46,7 @@ terminate that process by sb-ext:process-kill."
 terminate that process by sb-ext:process-kill."
   (push
    (sb-ext:run-program
-    (whereis "ffmpeg")
+    (jin.utils:whereis "ffmpeg")
     `("-f" "alsa" "-i" "hw:0,0"
            "-ab" "50k" "-c:a" "mp3"
            ,(concatenate 'string (make-prefix) ".mp3"))
@@ -58,7 +60,7 @@ terminate that process by sb-ext:process-kill."
 terminate that process by sb-ext:process-kill."
   (push
    (sb-ext:run-program
-    (whereis "ffmpeg")
+    (jin.utils:whereis "ffmpeg")
     `("-f" "x11grab"
            "-s" ,(grab-dimension)
            "-i" ,(sb-ext:posix-getenv "DISPLAY")
@@ -72,13 +74,13 @@ terminate that process by sb-ext:process-kill."
 (defun prompt-recording ()
   (if (any-alive-p)
       (alexandria:switch
-          ((dmenu '("YES" "NO")
+          ((jin.utils:dmenu '("YES" "NO")
                   "Kill previous recordings?")
            :test #'string=)
         ("YES" (kill-all))
         ("NO" nil))
       (alexandria:switch
-          ((dmenu '("audio" "video" "webcam" "screencast")
+          ((jin.utils:dmenu '("audio" "video" "webcam" "screencast")
                   "Select an option to start recording.")
            :test #'string=)
         ("audio" (record-audio))
@@ -97,7 +99,7 @@ terminate that process by sb-ext:process-kill."
 ;;                :action
 ;;                '(lambda ()
 ;;                  (let ((process (sb-ext:run-program
-;;                                  (whereis "ffmpeg")
+;;                                  (jin.utils:whereis "ffmpeg")
 ;;                                  `("-y" "-f" "x11grab"
 ;;                                         "-framerate" "60"
 ;;                                         "-s" ,(grab-dimension)
