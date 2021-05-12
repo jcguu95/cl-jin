@@ -1,0 +1,2 @@
+For a more comprehensive program like this, see
+=https://github.com/melisgl/journal=.
