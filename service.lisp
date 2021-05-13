@@ -114,6 +114,14 @@ of latest report of SERVICE."
     (format t "See log file at:")
     log-file))
 
+
+(defmacro dispatch-service (name action)
+  "Entry point for dispatching a service."
+  `(let ((service (make-instance 'service
+                                 :name ,name
+                                 :action ,action)))
+     (dispatch service)))
+
 (defun help ()
   (format t "Make a service instance by~%~%")
   (format t "  ~s"

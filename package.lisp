@@ -1,6 +1,8 @@
 (defpackage jin.service
   (:use #:cl)
   (:export #:dispatch
-           #:service
+           #:dispatch-service
            #:latest-launch
-           #:log-file))
+           #:logs
+           #:log-file
+           #:service))
