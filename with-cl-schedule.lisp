@@ -1,8 +1,8 @@
 (defmacro schedule-service (name action &rest schedule-definition)
-  "This macro makes use of Jin's clon v0.0.3. It wraps #'dispatch
-in a #'clon:schedule-function form."
-  ;; Depends on jin's clon v0.0.3.
-  ;; https://github.com/jcguu95/clon/tree/18707cb325138b177b0d5e3775b4e78cf67583b2
+  "This macro makes use of Jin's cl-schedule v0.0.5. It wraps #'dispatch
+in a #'cl-schedule:schedule-function form."
+  ;; Depends on jin's cl-schedule v0.0.3.
+  ;; https://github.com/jcguu95/cl-schedule/tree/18707cb325138b177b0d5e3775b4e78cf67583b2
   ;;
   ;; __A minimal example__
   ;;
@@ -13,15 +13,15 @@ in a #'clon:schedule-function form."
   ;;    (values 1 2 3))
   ;;  :second '(member 0 10 20 30 40 50)
   ;;  :day-of-week '(integer 2 4))
-  ;;
+  ;;  
   `(let* ((name ,name)
-          (schedule (clon:make-typed-cron-schedule ,@schedule-definition))
+          (schedule (cl-schedule:make-typed-cron-schedule ,@schedule-definition))
           (service (make-instance 'jin.service:service
                                   :name name
                                   :action ,action)))
-     (clon:schedule-function
+     (cl-schedule:schedule-function
       (lambda () (jin.service:dispatch service))
-      (clon:make-scheduler schedule
+      (cl-schedule:make-scheduler schedule
                            :init-time
                            ;; FIXME This doesn't take care when no log is present.
                            (local-time:timestamp-to-universal
@@ -33,3 +33,4 @@ in a #'clon:schedule-function form."
       :immediate t
       :ignore-skipped t
       :thread t)))
+

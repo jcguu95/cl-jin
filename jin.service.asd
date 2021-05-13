@@ -8,10 +8,10 @@
                :uiop
                :local-time
                :bordeaux-threads
-               :clon                    ; Jin's Clon v.0.0.3
+               :cl-schedule                    ; Jin's cl-schedule v0.0.5
                )
   :components (
                (:file "package")
                (:file "service")
-               (:file "with-clon")
+               (:file "with-cl-schedule")
                ))
