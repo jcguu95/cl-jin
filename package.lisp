@@ -2,7 +2,7 @@
   (:use :cl)
   (:export
 
-   :lookup-dict!
+   :lookup-dict-from-clip!
    :random-review!
    :review-history!
 
