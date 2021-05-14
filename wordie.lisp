@@ -54,29 +54,16 @@ as a string."
            *dict-dir* word)
    :output '(:string :stripped t)))
 
-(defun notify (title content &key (expire-timeout 0))
-  "Send notification using dmenu. EXPIRE-TIMEOUT is an INT32 in
-milisecond; 0 means infinite while (-1) means default."
-  ;; TODO Put this to another personal package.
-  ;; taken from https://github.com/death/dbus/blob/master/examples/notify.lisp
-  ;;
-  (dbus:with-open-bus (bus (dbus:session-server-addresses))
-    (dbus:with-introspected-object
-        (notifications bus "/org/freedesktop/Notifications"
-                       "org.freedesktop.Notifications")
-      (notifications "org.freedesktop.Notifications" "Notify"
-                     "Test" 0 "" title content '() '() expire-timeout))))
-
 (defun lookup-dict-string (string &key force)
   "Let the user pick a word in the input STRING using dmenu.
 Lookup the selected word from the dictionary. Announce the result
-using notify-send. Return the string to be written to file later."
+using notify-send. Return the string to be written to file
+later."
   (let* ((word (if force
                    string
                    (sentence->dmenu string))))
 
     ;; lookup WORD and push to notification
-   ;(notify "word.lisp" (lookup-word word))
     (jin.utils:notify-send "word.lisp" (lookup-word word))
 
     ;; if selected WORD isn't in the STRING, strip the STRING
@@ -92,7 +79,7 @@ using notify-send. Return the string to be written to file later."
       (format nil "(\"~a\"~% \"~a\"~% ~s~% ~s ~% ~s)~%~%"
               time word string *last-context* comment))))
 
-(defun lookup-dict! ()
+(defun lookup-dict-from-clip! ()
   "Let the user pick a word from the string in the clipboard
 using dmenu. Lookup the selected word's definition in the
 dictionary. Announce the result by notify-send. And save the
@@ -107,12 +94,12 @@ result to a clip file."
                           :if-does-not-exist :create)
       (write-sequence result file))))
 
-(defun read-clip ()
+(defun load-clip ()
   (setf *clip*
         (eval (read-from-string
                (format nil "'(~a)" (uiop:read-file-string "~/.nb/clip.txt"))))))
 
-(defun random-review (&key lookup)
+(defun %random-review (&key lookup)
   (let* ((entry (nth (random (length *clip*)) *clip*))
          (word (nth 1 entry))
          (sentence (nth 2 entry))
@@ -132,8 +119,10 @@ result to a clip file."
     (format nil "~a~%~%~a~%~%[context]~%~a" word sentence context)))
 
 (defun random-review! ()
-  (read-clip)
-  (jin.utils:notify-send (format nil "Review the word!~%") (random-review)))
+  (load-clip)
+  (jin.utils:notify-send (format nil "Review the word!~%")
+                         (%random-review)))
 
 (defun review-history! ()
-  (jin.utils:notify-send "Review History" (format nil "~s" *review-hist*)))
+  (jin.utils:notify-send "Review History"
+                         (format nil "~s" *review-hist*)))
