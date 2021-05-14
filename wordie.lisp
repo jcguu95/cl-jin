@@ -1,6 +1,12 @@
 (in-package :jin.wordie)
 
 (defparameter *last-context* nil)
+(defparameter *review-hist* nil)
+(defparameter *review-hist-length* 10)
+(defparameter *dict-dir*
+  (concatenate 'string
+               (sb-unix::posix-getenv "HOME")
+               "/data/storage/dictionary"))
 
 (defun lint (str)
   "Lint the marks in the input string STR."
@@ -21,7 +27,7 @@
 after calling dmenu."
   (let ((context (uiop:run-program
                   ;; returns the current window name
-                  (format nil "DISPLAY=:0 && xdotool getwindowfocus getwindowname")
+                  "DISPLAY=:0 && xdotool getwindowfocus getwindowname"
                   :output '(:string :stripped t))))
     (setf *last-context* context)))
 
@@ -37,11 +43,6 @@ choose a word by using dmenu. Return the selected word."
            (format nil "~{~a\\n~}"
                    (sentence->words sentence)))
    :output '(:string :stripped t)))
-
-(defvar *dict-dir*
-  (concatenate 'string
-               (sb-unix::posix-getenv "HOME")
-               "/data/storage/dictionary"))
 
 (defun lookup-word (word)
   "Look up the input word WORD by using sdcv. Format the output
@@ -111,8 +112,6 @@ result to a clip file."
         (eval (read-from-string
                (format nil "'(~a)" (uiop:read-file-string "~/.nb/clip.txt"))))))
 
-(defvar *review-hist* nil)
-(defvar *review-hist-length* 10)
 (defun random-review (&key lookup)
   (let* ((entry (nth (random (length *clip*)) *clip*))
          (word (nth 1 entry))
@@ -122,8 +121,9 @@ result to a clip file."
     ;; add word to history and truncate if needed
     (progn
       (push word *review-hist*)
-      (setf *review-hist* (subseq *review-hist*
-                                  0 (min *review-hist-length* (length *review-hist*)))))
+      (setf *review-hist* (subseq *review-hist* 0
+                                  (min *review-hist-length*
+                                       (length *review-hist*)))))
 
     ;; if LOOKUP is set T, lookup the string without word selection.
     (when lookup (lookup-dict-string word :force t))
@@ -133,9 +133,7 @@ result to a clip file."
 
 (defun random-review! ()
   (read-clip)
- ;(notify (format nil "Review the word!~%") (random-review)))
   (jin.utils:notify-send (format nil "Review the word!~%") (random-review)))
 
 (defun review-history! ()
- ;(notify "Review History" (format nil "~s" *review-hist*)))
   (jin.utils:notify-send "Review History" (format nil "~s" *review-hist*)))
