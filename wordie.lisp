@@ -1,28 +1,12 @@
 (in-package :jin.wordie)
 
-;; readme
-;; entry points
-;; #'lookup-dict!
-;; #'random-review!
-;; #'review-history!
-
 (defparameter *last-context* nil)
 
 (defun lint (str)
   "Lint the marks in the input string STR."
-  (arrows:-<> str
-              (cl-ppcre:regex-replace-all (string #\Newline) <> " ")
-              (cl-ppcre:regex-replace-all "-" <> " ")
-              (cl-ppcre:regex-replace-all "\\+" <> " ")
-              (cl-ppcre:regex-replace-all "\\(" <> " ")
-              (cl-ppcre:regex-replace-all "\\)" <> " ")
-              (cl-ppcre:regex-replace-all "\\." <> "")
-              (cl-ppcre:regex-replace-all "\\?" <> "")
-              (cl-ppcre:regex-replace-all "\"" <> "")
-              (cl-ppcre:regex-replace-all "," <> "")
-              (cl-ppcre:regex-replace-all "!" <> "")
-              (cl-ppcre:regex-replace-all ":" <> "")
-              (cl-ppcre:regex-replace-all ";" <> "")))
+  (setf str (cl-ppcre:regex-replace-all "[-\\+\\(\\)\\n]" str " "))
+  (setf str (cl-ppcre:regex-replace-all "[\\.\\?\"!:;,]" str ""))
+  str)
 
 (defun sentence->words (sentence)
   "Break the input SENTENCE into a list of words."
