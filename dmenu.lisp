@@ -8,6 +8,10 @@
        (out)
      (with-input-from-string
          (in (format nil "~{~a~%~}" candidates))
-       (sb-ext:run-program (whereis "dmenu")
-                           `("-p" ,prompt)
-                           :input in :output out)))))
+       (let ((font "terminus")
+             (size "18"))
+         (sb-ext:run-program (whereis "dmenu")
+                             (list "-p" prompt "-fn"
+                                   (concatenate 'string
+                                                font "-" size))
+                             :input in :output out))))))
