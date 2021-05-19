@@ -44,6 +44,10 @@
                    :action `(lambda ()
                               (sb-ext:run-program
                                ,pactl-command
+                               ;; FIXME set-sink-volume 0 doesn't
+                               ;; work all the time, see
+                               ;; https://unix.stackexchange.com/questions/560467/
+                               ;; is-there-a-consistent-shell-command-for-adjusting-volume
                                ',(list "set-sink-volume" "0" "100%")
                                :output *standard-output*
                                :error *standard-output*)))))
