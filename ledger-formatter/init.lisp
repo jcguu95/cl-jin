@@ -1,4 +1,4 @@
-(in-package :ledger-formatter)
+(in-package :jin.ledger-formatter)
 
 (defstruct ledger-entry
   date description comment flows)
