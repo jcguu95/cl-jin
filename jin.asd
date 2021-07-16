@@ -16,5 +16,6 @@
                "jin.questionnaire"
                "jin.utils"
                "jin.service"
+               "jin.recording"
                )
   :components ())

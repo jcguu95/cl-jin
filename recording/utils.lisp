@@ -1,4 +1,4 @@
-(in-package :recording)
+(in-package :jin.recording)
 
 (defun make-prefix ()
   "Make prefix for output files."

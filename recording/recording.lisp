@@ -1,4 +1,4 @@
-(in-package :recording)
+(in-package :jin.recording)
 
 ;; TODO use jin.service to launch recordings.
 ;;
