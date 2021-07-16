@@ -1,9 +1,9 @@
-#!/usr/bin/sbcl --script
+#!/usr/local/bin/sbcl --script
 
 (load "~/.sbclrc")
 (ql:quickload :arrows
               :silent t)
-(ql:quickload :questionnaire
+(ql:quickload :jin.questionnaire
               :silent t)
 (in-package :questionnaire)
 
