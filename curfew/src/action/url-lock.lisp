@@ -1,4 +1,4 @@
-(in-package :curfew)
+(in-package :jin.curfew)
 
 ;(setf *dns-path* "/home/jin/hosts")
 (setf *dns-path* "/etc/hosts")

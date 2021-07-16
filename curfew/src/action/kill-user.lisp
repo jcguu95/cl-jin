@@ -1,4 +1,4 @@
-(in-package :curfew)
+(in-package :jin.curfew)
 
 (defun kill-user (user)
   (format t "Suspending user ~a..~%" user)

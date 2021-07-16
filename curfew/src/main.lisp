@@ -1,4 +1,4 @@
-(in-package :curfew)
+(in-package :jin.curfew)
 
 (setf *url-list*
       '(
@@ -21,7 +21,7 @@
 
 (defun main ()
   "Main entry point."
-  (format t 
+  (format t
 	  "~%------~%Function #'main executed at ~a.~%------~%"
 	  (local-time:now))
   (mapcar #'within=>do *instruction*)

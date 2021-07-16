@@ -1,4 +1,4 @@
-(in-package :curfew)
+(in-package :jin.curfew)
 
 (defun kill-app (app)
   (format t "Killing app ~a..~%" app)

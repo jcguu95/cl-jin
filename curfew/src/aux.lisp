@@ -1,4 +1,4 @@
-(in-package :curfew)
+(in-package :jin.curfew)
 
 (defun apply-functions (fs e)
   ;; test: (apply-functions (list #'not #'not) nil) => (t t)

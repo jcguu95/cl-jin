@@ -1,4 +1,4 @@
-(in-package :curfew)
+(in-package :jin.curfew)
 
 (defun time-within (t0 t1)
   "Return a function: time \\mapsto (time \\in [t0,t1])."

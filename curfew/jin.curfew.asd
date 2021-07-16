@@ -1,6 +1,6 @@
 #-asdf3.1 (error "ASDF 3.1 or bust!")
 
-(asdf:defsystem :curfew
+(asdf:defsystem :jin.curfew
   :description "Self-control is an illusion."
   :version "1.0.0"
   :serial t
