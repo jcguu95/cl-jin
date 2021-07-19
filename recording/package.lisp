@@ -6,6 +6,7 @@
    :record-video
    :record-webcam
    :record-screencast
+   :screenshot
    :stop-recording
    :prompt-recording
 
