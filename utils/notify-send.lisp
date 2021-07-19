@@ -5,6 +5,12 @@
 
 (defun notify-send (title content &optional (expire-time 0))
   "Expire-time in ms."
+  (when (or (not (stringp title))
+            (string= title ""))
+    (setf title "-"))
+  (when (or (not (stringp content))
+            (string= content ""))
+    (setf content "-"))
   (let ((service (make-instance
                   'jin.service:service
                   :name "notify-send"
