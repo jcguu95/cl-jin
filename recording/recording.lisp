@@ -81,7 +81,7 @@ terminate that process by sb-ext:process-kill."
         ("NO" nil))
       (alexandria:switch
           ((jin.utils:dmenu '("audio" "video" "webcam" "screencast")
-                  "Select an option to start recording.")
+                  "Select an option to start recording:")
            :test #'string=)
         ("audio" (record-audio))
         ("video" (record-video))
