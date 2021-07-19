@@ -1,16 +1,20 @@
 (in-package :jin.recording)
 
+(defparameter *store* (concatenate 'string
+                                   (sb-ext:posix-getenv "HOME")
+                                   "/data/capture/+media/"))
+
 (defun make-prefix ()
   "Make prefix for output files."
   (concatenate 'string
-               (sb-ext:posix-getenv "HOME")
-               "/"
+               *store*
                (local-time:format-timestring
                 t (local-time:now)
                 :format '((:YEAR 4) (:MONTH 2) (:DAY 2)
                           #\-
                           (:HOUR 2) (:MIN 2) (:SEC 2)))))
 
+;; TODO Use jin.utils:whereis
 (defun whereis (target)
   (string-right-trim
    (format nil "~%")
