@@ -18,4 +18,7 @@
    :toggle-mute-audio
    :normalize-audio
    :audio-volume
+
+   :set-opacity
+   :alter-opacity
    ))

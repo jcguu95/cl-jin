@@ -16,4 +16,5 @@
                (:file "battery")
                (:file "brightness")
                (:file "audio-volume")
+               (:file "transparency")
                ))
