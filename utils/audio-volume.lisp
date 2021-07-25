@@ -6,8 +6,8 @@
   (setf n (round n))
   (let* ((pactl-command "/usr/bin/pactl")
          (string (if (> n 0)
-                     (format nil "+~d%" n)
-                     (format nil "~d%" n)))
+                     (format nil ":+~d%" n)
+                     (format nil ":~d%" n)))
          (service
            (make-instance
             'jin.service:service
@@ -19,7 +19,7 @@
                                 "0" string)
                         :output *standard-output*
                         :error *standard-output*)))))
-    (jin.utils:notify-send "Audio Volume" string)
+    (jin.utils:notify-send "Audio Volume" string 1500)
     (jin.service:dispatch service)))
 
 (defun toggle-mute-audio ()
@@ -33,7 +33,7 @@
                                ',(list "set-sink-mute" "0" "toggle")
                                :output *standard-output*
                                :error *standard-output*)))))
-    (jin.utils:notify-send "Audio Volume" "toggled mute audio")
+    (jin.utils:notify-send "Audio Volume" "toggled mute audio" 1500)
     (jin.service:dispatch service)))
 
 (defun normalize-audio ()
@@ -51,7 +51,7 @@
                                ',(list "set-sink-volume" "0" "100%")
                                :output *standard-output*
                                :error *standard-output*)))))
-    (jin.utils:notify-send "Audio Volume" "normalize audio")
+    (jin.utils:notify-send "Audio Volume" "normalize audio" 1500)
     (jin.service:dispatch service)))
 
 (defun audio-volume ()
