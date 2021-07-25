@@ -1,11 +1,9 @@
 (in-package :jin.utils)
 
-;; TODO Use jin.service to launch dmenu.
-(defun dmenu (candidates &optional prompt)
+(defun dmenu-deprecated (candidates &optional prompt)
   (string-right-trim
    '(#\Newline)
-   (with-output-to-string
-       (out)
+   (with-output-to-string (out)
      (with-input-from-string
          (in (format nil "~{~a~%~}" candidates))
        (let ((font "terminus")
@@ -15,3 +13,21 @@
                                    (concatenate 'string
                                                 font "-" size))
                              :input in :output out))))))
+
+(defun dmenu (candidates &optional prompt)
+  (unless prompt (setf prompt ""))
+  (let* ((command (whereis "rofi"))
+         (service (make-instance
+                   'jin.service:service
+                   :name "rofi"
+                   :action `(lambda ()
+                              (with-output-to-string (out)
+                                (with-input-from-string
+                                    (in ,(format nil "~{~a~%~}" candidates))
+                                  (sb-ext:run-program
+                                   ,command
+                                   ',(list "-dmenu" "-p" prompt)
+                                   :input in
+                                   :output out
+                                   :error *standard-output*)))))))
+    (jin.service:dispatch service)))
