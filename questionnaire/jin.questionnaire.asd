@@ -6,7 +6,8 @@
   :serial t
   :depends-on (:alexandria
                :cl-csv
-               :cl-date-time-parser)
+               :cl-date-time-parser
+               :jin.utils)
   :components ((:file "package")
                (:file "aux-util")
                (:file "questionnaire")

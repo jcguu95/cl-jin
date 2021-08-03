@@ -13,17 +13,7 @@ newline trimmed."
 ; TODO Add a format checker. E.g. "%d%d:%d%d". .. Alas, my regex-fu :-(
   (let ((prompt (car question))
         (default-answers (car (cdr question))))
-    (string-right-trim
-     '(#\Newline)
-     (uiop:run-program (list "dmenu" "-p" prompt)
-                       :input
-                       (uiop:process-info-output
-                        (uiop:launch-program
-                         (list "echo" "-e"
-                               (apply #'concatenate 'string
-                                      (aux/interpose "\\n" default-answers)))
-                         :output :stream))
-                       :output :string))))
+    (jin.utils:dmenu default-answers prompt)))
 
 (defun last-update (pathname)
   "Expect the pathname of a csv file. Read its zeroth field of
