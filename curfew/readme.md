@@ -4,16 +4,7 @@
 2. Make sure `/root/.sbclrc` loads `quicklisp` properly.
 3. Run the command `./bin/run.sh`.
 
-# Remark
+# Known Bugs
 
-Notice that the functions `#'url-lock` and `#'url-unlock` do
-REQUIRE access to `/etc/hosts`.
-
-# Bug
-
-Remember that `#'lock-url` has a weird bug.
-
-# TODO
-
-+ Add systematic 10-minute breaks.
-+ Add systematic 30-minute locks.
+The function `#'lock-url` has a weird bug; see comment in its
+code.
