@@ -1,2 +1,8 @@
+# TODO
+
+1. Add =#'service-log-delete-if=.
+
+# Reference
+
 For a more comprehensive program like this, see
 =https://github.com/melisgl/journal=.
