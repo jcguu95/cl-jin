@@ -2,6 +2,12 @@
 
 1. Add =#'service-log-delete-if=.
 
+2. Use persistence util (like mito?) rather than plain text as
+   log entries. Still, make it easy to print/show the log entries
+   in plain texts.
+
+3. Make this a stand alone system - cl-service?
+
 # Reference
 
 For a more comprehensive program like this, see
