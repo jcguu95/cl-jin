@@ -7,10 +7,13 @@
               :silent t)
 (in-package :questionnaire)
 
-
+;;
 
 (defconstant my-qnrs
-  (list mood-qnr weight-qnr))
+  (list
+   ;mood-qnr
+    weight-qnr
+   ))
 
 (if (member "--force"
             (uiop:command-line-arguments)

@@ -16,14 +16,14 @@ terminate that process by sb-ext:process-kill."
   (push (sb-ext:run-program
          (jin.utils:whereis "scrot")
          `(,select-mode "-q" "35"
-                       ,(concatenate 'string (make-prefix) ".jpg"))
+                        ,(concatenate 'string (make-prefix) ".jpg"))
          :output *standard-output*
          :error *standard-output*
          :wait nil)
-
         *processes*)
-  (jin.utils:notify-send
-   "" (format nil "Took a screenshot in ~a!" *store*) 3000))
+  ;; (jin.utils:notify-send
+  ;;  "" (format nil "Took a screenshot in ~a!" *store*) 3000)
+  )
 
 (defun record-screencast ()
   "With :wait being NIL,this will return a process. I can then

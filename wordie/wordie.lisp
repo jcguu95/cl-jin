@@ -1,5 +1,7 @@
 (in-package :jin.wordie)
 
+;; Check db health by evaluating (%random-review).
+
 (defparameter *last-context* nil)
 (defparameter *review-hist* nil)
 (defparameter *review-hist-length* 10)
@@ -7,14 +9,13 @@
   (concatenate 'string
                (sb-unix::posix-getenv "HOME")
                "/data/storage/dictionary"))
+(defparameter *clip-dir* "~/.nb/clip.txt")
 
 (defun lint (str)
   "Lint the marks in the input string STR."
-  (setf str (cl-ppcre:regex-replace-all "[-\\+\\(\\)\\n]" str " "))
-  (setf str (cl-ppcre:regex-replace-all "[\\.\\?\"!:;,]" str ""))
-  str)
+  (cl-ppcre:regex-replace-all "[-\\+\\(\\)\\n\\.\\?\"!:;,]" str " "))
 
-(defun sentence->words (sentence)
+(defun words<-sentence (sentence)
   "Break the input SENTENCE into a list of words."
   (remove-duplicates
    (split-sequence:split-sequence #\Space
@@ -31,7 +32,7 @@ after calling dmenu."
                   :output '(:string :stripped t))))
     (setf *last-context* context)))
 
-(defun sentence->dmenu (sentence)
+(defun dmenu<-sentence (sentence)
   "Break the input SENTENCE into a list of words. Let the user
 choose a word by using dmenu. Return the selected word."
   ;; First get context before the current window info is cleared
@@ -41,7 +42,7 @@ choose a word by using dmenu. Return the selected word."
   (uiop:run-program
    (format nil "echo -e \"~a\" | dmenu"
            (format nil "~{~a\\n~}"
-                   (sentence->words sentence)))
+                   (words<-sentence sentence)))
    :output '(:string :stripped t)))
 
 (defun lookup-word (word)
@@ -61,13 +62,13 @@ using notify-send. Return the string to be written to file
 later."
   (let* ((word (if force
                    string
-                   (sentence->dmenu string))))
+                   (dmenu<-sentence string))))
 
     ;; lookup WORD and push to notification
     (jin.utils:notify-send "word.lisp" (lookup-word word))
 
     ;; if selected WORD isn't in the STRING, strip the STRING
-    (unless (member word (sentence->words string)
+    (unless (member word (words<-sentence string)
                     :test #'string-equal)
       (setf string ""))
 
@@ -88,7 +89,7 @@ result to a clip file."
          (result (lookup-dict-string clip)))
 
     ;; write result to file
-    (with-open-file (file (pathname "~/.nb/clip.txt")
+    (with-open-file (file (pathname *clip-dir*)
                           :direction :output
                           :if-exists :append
                           :if-does-not-exist :create)
@@ -96,8 +97,9 @@ result to a clip file."
 
 (defun load-clip ()
   (setf *clip*
-        (eval (read-from-string
-               (format nil "'(~a)" (uiop:read-file-string "~/.nb/clip.txt"))))))
+        (eval
+         (read-from-string
+          (format nil "'(~a)" (uiop:read-file-string *clip-dir*))))))
 
 (defun %random-review (&key lookup)
   (let* ((entry (nth (random (length *clip*)) *clip*))
@@ -120,9 +122,11 @@ result to a clip file."
 
 (defun random-review! ()
   (load-clip)
-  (jin.utils:notify-send (format nil "Review the word!~%")
-                         (%random-review)))
+  (jin.utils:notify-send
+   (format nil "Review the word!~%")
+   (%random-review)))
 
 (defun review-history! ()
-  (jin.utils:notify-send "Review History"
-                         (format nil "~s" *review-hist*)))
+  (jin.utils:notify-send
+   "Review History"
+   (format nil "~s" *review-hist*)))

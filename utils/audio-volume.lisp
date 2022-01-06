@@ -86,6 +86,8 @@
   (string-trim '(#\Newline)
                (with-output-to-string (s)
                  (uiop:run-program
-                  "amixer get Master | grep 'Front Left' | grep -o '[0-9]*%'"
+		  ;FIXME The following produces bugs every now and then.
+                  ;"amixer get Master | grep 'Front Left' | grep -o '[0-9]*%'"
+                  "amixer get Master | grep -o '[0-9]*%'"
                   :output s))))
 (audio-volume)

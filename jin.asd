@@ -9,7 +9,8 @@
   :version "0.0"
   :properties ((#:author-email . "jcguu95@gmail.com"))
   #+asdf-unicode :encoding #+asdf-unicode :utf-8
-  :depends-on ("jin.curfew"
+  :depends-on (
+               ;; "jin.curfew"
                "jin.wordie"
                "jin.formosa-bakery-helper"
                ;; "jin.ledger-formatter" ;; not done
