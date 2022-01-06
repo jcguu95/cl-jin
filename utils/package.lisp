@@ -21,4 +21,6 @@
 
    :set-opacity
    :alter-opacity
+
+   :eval-in-emacs
    ))

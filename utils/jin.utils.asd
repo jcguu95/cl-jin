@@ -17,4 +17,5 @@
                (:file "brightness")
                (:file "audio-volume")
                (:file "transparency")
+               (:file "eval-in-emacs")
                ))
