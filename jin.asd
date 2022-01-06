@@ -12,7 +12,7 @@
   :depends-on (
                ;; "jin.curfew"
                "jin.wordie"
-               "jin.formosa-bakery-helper"
+               ;; "jin.formosa-bakery-helper" ;; archived.
                ;; "jin.ledger-formatter" ;; not done
                "jin.questionnaire"
                "jin.utils"

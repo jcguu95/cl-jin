@@ -1,3 +1,5 @@
+This repo is archived as it is not intended to be used any longer.
+
 # Usage
 
 In `sbcl` repl:
