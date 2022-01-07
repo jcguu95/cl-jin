@@ -2,7 +2,11 @@
   (:use :cl)
   (:export
 
+   :select
    :dmenu
+   :call-emacs-dropdown-ivy-select
+
+
    :whereis
    :notify-send
    :notify-send-using-dbus
@@ -23,4 +27,4 @@
    :alter-opacity
 
    :eval-in-emacs
-   ))
+   :ping-emacs))

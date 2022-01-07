@@ -5,7 +5,7 @@
   :version "1.0.0"
   :serial t
   :depends-on (:uiop :alexandria :dbus :cl-ppcre :stumpwm
-                     :trivial-battery :jin.service)
+                     :trivial-battery :jin.service :trivial-timeout)
   :components ((:file "package")
                (:file "whereis")
                (:file "dmenu")
