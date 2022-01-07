@@ -8,7 +8,7 @@
                      :trivial-battery :jin.service :trivial-timeout)
   :components ((:file "package")
                (:file "whereis")
-               (:file "dmenu")
+               (:file "select")
                (:file "notify-send")
                (:file "org-timestamp")
                (:file "cpu")

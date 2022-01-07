@@ -4,6 +4,8 @@
 
    :select
    :dmenu
+   :rofi
+   :rofi-or-dmenu
    :call-emacs-dropdown-ivy-select
 
 

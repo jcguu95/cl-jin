@@ -3,7 +3,7 @@
 (defun select (strings &key (timeout 10))
   (if (ping-emacsclient)
       (call-emacs-dropdown-ivy-select strings)
-      (dmenu strings)))
+      (rofi-or-dmenu strings)))
 
 (defun dropdown-ivy-select-sexpr
     (&key (ivy-height 50) (name "[TOP] ivy-read") (alpha '(80 70)) (unsplittable t)
@@ -51,24 +51,67 @@ for user selection, and return the selected string."
      (list ,@strings))
    :timeout timeout))
 
-(defun dmenu (strings &optional (prompt ""))
+(defun rofi-or-dmenu (strings &optional (prompt ""))
   "Receive a list of STRINGs with a optional PROMPT.
 Let the user select a string using rofi or dmenu, and return the
 selected string."
+  (if (whereis "rofi")
+      (rofi strings prompt)
+      (dmenu strings prompt)))
+
+;; (defun dmenu (strings &optional (prompt ""))
+;;   "Receive a list of STRINGs with a optional PROMPT.
+;; Let the user select a string using dmenu, and return the
+;; selected string."
+;;   (string-right-trim
+;;    '(#\Newline)
+;;    (with-output-to-string (out)
+;;      (with-input-from-string
+;;          (in (format nil "~{~a~%~}" strings))
+;;        (let ((rofi (whereis "rofi"))
+;;              (dmenu (whereis "dmenu"))
+;;              command args)
+;;          (if rofi
+;;              (progn (setf command rofi)
+;;                     (setf args (list "-dmenu" "-p" prompt)))
+;;              (progn (setf command dmenu)
+;;                     (setf args (list "-p" prompt "-fn"
+;;                                      (format nil "~a-~a" font size)))))
+;;          (sb-ext:run-program command args
+;;                              :input in
+;;                              :output out
+;;                              :error *standard-output*))))))
+
+(defun rofi (strings &optional (prompt ""))
+  "Receive a list of STRINGs with a optional PROMPT.
+Let the user select a string using rofi, and return the selected
+string."
   (string-right-trim
    '(#\Newline)
    (with-output-to-string (out)
      (with-input-from-string
          (in (format nil "~{~a~%~}" strings))
-       (let ((rofi (whereis "rofi"))
-             (dmenu (whereis "dmenu"))
-             command args)
-         (if rofi
-             (progn (setf command rofi)
-                    (setf args (list "-dmenu" "-p" prompt)))
-             (progn (setf command dmenu)
-                    (setf args (list "-p" prompt "-fn"
-                                     (format nil "~a-~a" font size)))))
+       (let (command args)
+         (progn (setf command (whereis "rofi"))
+                (setf args (list "-dmenu" "-p" prompt)))
+         (sb-ext:run-program command args
+                             :input in
+                             :output out
+                             :error *standard-output*))))))
+
+(defun dmenu (strings &optional (prompt "") (font "Terminus") (size "14"))
+  "Receive a list of STRINGs with a optional PROMPT.
+Let the user select a string using dmenu, and return the selected
+string."
+  (string-right-trim
+   '(#\Newline)
+   (with-output-to-string (out)
+     (with-input-from-string
+         (in (format nil "~{~a~%~}" strings))
+       (let (command args)
+         (progn (setf command (whereis "dmenu"))
+                (setf args (list "-p" prompt "-fn"
+                                 (format nil "~a-~a" font size))))
          (sb-ext:run-program command args
                              :input in
                              :output out
