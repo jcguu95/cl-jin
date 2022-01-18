@@ -3,7 +3,10 @@
 (defun eval-in-emacs-synchronous- (s-expr)
   "Eval S-EXPR with `emacsclient' synchronously. This means that
 it waits for emacs for an indefinitely long period of time."
-  (let ((string (write-to-string s-expr :case :downcase)))
+  (let ((string (cl-ppcre:regex-replace-all
+                 "jin.utils::?"
+                 (write-to-string s-expr :case :downcase)
+                 "")))
     (format t "Sending ~s to Emacs.~&" string)
     (read-from-string
      (with-output-to-string (stream)

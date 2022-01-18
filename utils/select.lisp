@@ -1,9 +1,12 @@
 (in-package :jin.utils)
 
-(defun select (strings &key (timeout 10))
-  (if (ping-emacsclient)
-      (call-emacs-dropdown-ivy-select strings)
-      (rofi-or-dmenu strings)))
+(defun select (strings &key (timeout 10) (prompt "Select: "))
+  (rofi-or-dmenu strings prompt)
+  ;; NOTE The following is leaky.
+  ;; (if (ping-emacsclient)
+  ;;     (call-emacs-dropdown-ivy-select strings :prompt prompt)
+  ;;     (rofi-or-dmenu strings prompt))
+  )
 
 (defun dropdown-ivy-select-sexpr
     (&key (ivy-height 50) (name "[TOP] ivy-read") (alpha '(80 70)) (unsplittable t)

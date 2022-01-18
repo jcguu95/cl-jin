@@ -8,6 +8,7 @@
    :rofi-or-dmenu
    :call-emacs-dropdown-ivy-select
 
+   :lexic-search-dropdown
 
    :whereis
    :notify-send
@@ -29,4 +30,7 @@
    :alter-opacity
 
    :eval-in-emacs
-   :ping-emacs))
+   :ping-emacs
+
+   :format-sexpr
+   ))

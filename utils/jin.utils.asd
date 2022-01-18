@@ -4,7 +4,7 @@
   :description "Jin's scripts."
   :version "1.0.0"
   :serial t
-  :depends-on (:uiop :alexandria :dbus :cl-ppcre :stumpwm
+  :depends-on (:uiop :alexandria :dbus :cl-ppcre :stumpwm :fiveam
                      :trivial-battery :jin.service :trivial-timeout)
   :components ((:file "package")
                (:file "whereis")
@@ -18,4 +18,6 @@
                (:file "audio-volume")
                (:file "transparency")
                (:file "eval-in-emacs")
+               (:file "lexic-search")
+               (:file "format-sexpr")
                ))
