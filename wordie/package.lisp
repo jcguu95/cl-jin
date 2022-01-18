@@ -3,7 +3,9 @@
   (:export
 
    :lookup-dict-from-clip!
-   :random-review!
+   :review!
    :review-history!
+
+   :select-review!
 
    ))

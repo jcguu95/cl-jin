@@ -1,6 +1,6 @@
 (in-package :jin.wordie)
 
-;; Check db health by evaluating (%random-review).
+;; Check db health by evaluating (%review).
 
 (defparameter *last-context* nil)
 (defparameter *review-hist* nil)
@@ -9,7 +9,7 @@
   (concatenate 'string
                (sb-unix::posix-getenv "HOME")
                "/data/storage/dictionary"))
-(defparameter *clip-dir* "~/.nb/clip.txt")
+(defparameter *clip-dir* "~/.nb/clip.el")
 
 (defun lint (str)
   "Lint the marks in the input string STR."
@@ -32,18 +32,12 @@ after calling dmenu."
                   :output '(:string :stripped t))))
     (setf *last-context* context)))
 
-(defun dmenu<-sentence (sentence)
+(defun select<-sentence (sentence)
   "Break the input SENTENCE into a list of words. Let the user
-choose a word by using dmenu. Return the selected word."
-  ;; First get context before the current window info is cleared
-  ;; by dmenu.
+choose a word by using jin.utils:select. Return the selected
+word."
   (get-context)
-  ;; Usage: set sentence to be (trivial-clipboard:text)
-  (uiop:run-program
-   (format nil "echo -e \"~a\" | dmenu"
-           (format nil "~{~a\\n~}"
-                   (words<-sentence sentence)))
-   :output '(:string :stripped t)))
+  (jin.utils:select (words<-sentence sentence)))
 
 (defun lookup-word (word)
   "Look up the input word WORD by using sdcv. Format the output
@@ -56,16 +50,21 @@ as a string."
    :output '(:string :stripped t)))
 
 (defun lookup-dict-string (string &key force)
-  "Let the user pick a word in the input STRING using dmenu.
+  "Let the user pick a word in the input STRING using jin.utils:select.
 Lookup the selected word from the dictionary. Announce the result
 using notify-send. Return the string to be written to file
 later."
   (let* ((word (if force
                    string
-                   (dmenu<-sentence string))))
+                   (select<-sentence string))))
 
-    ;; lookup WORD and push to notification
-    (jin.utils:notify-send "word.lisp" (lookup-word word))
+    ;; Lookup WORD and push to notification.
+    ;;
+    ;; The old way is to use notify-send. The new way is to use
+    ;; lexic-search-dropdown. FIXME When emacsclient is absent
+    ;; use the old way then.
+    ;; (jin.utils:notify-send "word.lisp" (lookup-word word))
+    (jin.utils:lexic-search-dropdown word)
 
     ;; if selected WORD isn't in the STRING, strip the STRING
     (unless (member word (words<-sentence string)
@@ -74,9 +73,12 @@ later."
 
     ;; wrap entry with time and context; render as a string.
     (let ((time (local-time:now))
-          (comment (uiop:run-program
-                    (format nil "echo \"\" | dmenu -p \"Comment: \" ")
-                    :output '(:string :stripped t))))
+          (comment nil
+            ;; (jin.utils:rofi-or-dmenu () "Comment: ")
+            ;; (uiop:run-program
+            ;;  (format nil "echo \"\" | dmenu -p \"Comment: \" ")
+            ;;  :output '(:string :stripped t))
+            ))
       (format nil "(\"~a\"~% \"~a\"~% ~s~% ~s ~% ~s)~%~%"
               time word string *last-context* comment))))
 
@@ -87,7 +89,6 @@ dictionary. Announce the result by notify-send. And save the
 result to a clip file."
   (let* ((clip (trivial-clipboard:text))
          (result (lookup-dict-string clip)))
-
     ;; write result to file
     (with-open-file (file (pathname *clip-dir*)
                           :direction :output
@@ -101,30 +102,42 @@ result to a clip file."
          (read-from-string
           (format nil "'(~a)" (uiop:read-file-string *clip-dir*))))))
 
-(defun %random-review (&key lookup)
-  (let* ((entry (nth (random (length *clip*)) *clip*))
+(defun select-review! ()
+  "TODO"
+  (load-clip)
+  (jin.utils:notify-send
+   (format nil "Review the word!~%")
+   (%review :word (jin.utils:rofi-or-dmenu
+                   (reverse (mapcar #'cadr *clip*))
+                   "Select to review: "))))
+
+(defun %review (&key word lookup)
+  (load-clip)
+  (let* ((entry (if word
+                    (find-if (lambda (x)
+                               (equal word (nth 1 x)))
+                             *clip*)
+                    ;; word nil => random select
+                    (nth (random (length *clip*)) *clip*)))
          (word (nth 1 entry))
          (sentence (nth 2 entry))
          (context (nth 3 entry)))
-
     ;; add word to history and truncate if needed
     (progn
       (push word *review-hist*)
       (setf *review-hist* (subseq *review-hist* 0
                                   (min *review-hist-length*
                                        (length *review-hist*)))))
-
     ;; if LOOKUP is set T, lookup the string without word selection.
     (when lookup (lookup-dict-string word :force t))
-
     ;; format the final result as a string.
     (format nil "~a~%~%~a~%~%[context]~%~a" word sentence context)))
 
-(defun random-review! ()
+(defun review! (word)
   (load-clip)
   (jin.utils:notify-send
    (format nil "Review the word!~%")
-   (%random-review)))
+   (%review :word word)))
 
 (defun review-history! ()
   (jin.utils:notify-send
