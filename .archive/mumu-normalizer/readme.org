@@ -1,0 +1,5 @@
+* mumu-normalizer
+
+This is a little script to help Jiahao, Sam, and I find patterns
+in the almost complex algebra. It is deprecated as we have found
+a better pattern symbolically.
