@@ -12,11 +12,15 @@
   :depends-on (
                ;; "jin.curfew"
                "jin.wordie"
-               ;; "jin.formosa-bakery-helper" ;; archived.
-               ;; "jin.ledger-formatter" ;; not done
                "jin.questionnaire"
                "jin.utils"
                "jin.service"
                "jin.recording"
+
+	       ;;; incomplete
+               ;; "jin.ledger-formatter"
+
+	       ;;; archived.
+               ;;"jin.formosa-bakery-helper"
                )
   :components ())

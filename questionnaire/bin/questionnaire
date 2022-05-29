@@ -1,4 +1,6 @@
-#!/usr/local/bin/sbcl --script
+#!/home/jin/.local/bin/sbcl --script
+
+; TODO Make the shebang more portable.. https://unix.stackexchange.com/questions/20880/how-can-i-use-environment-variables-in-my-shebang
 
 (load "~/.sbclrc")
 (ql:quickload :arrows
