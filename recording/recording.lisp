@@ -15,7 +15,7 @@ terminate that process by sb-ext:process-kill."
       (setf select-mode ""))
   (push (sb-ext:run-program
          (jin.utils:whereis "scrot")
-         `(,select-mode "-q" "35"
+         `(,select-mode "-q" "35" ; q stands for quality
                         ,(concatenate 'string (make-prefix) ".jpg"))
          :output *standard-output*
          :error *standard-output*
